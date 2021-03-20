@@ -4,7 +4,7 @@ public enum projecttileType
 {
     rock,arrow,fireball
 };
-public class ProjectTile : MonoBehaviour
+public class Projectile : MonoBehaviour
 {
     // Start is called before the first frame update
     [SerializeField]

@@ -77,7 +77,7 @@ public class TowerManager : Loader<TowerManager>
     }
     public void BuyTower(int price)
     {
-        Manager.Instance.subtractMoney(price);
+        Manager.Instance.SubtractMoney(price);
     }
     public void SelectTower(TowerButton towerSelected)
     {

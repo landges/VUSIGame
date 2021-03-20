@@ -9,7 +9,7 @@ public class TowerControl : MonoBehaviour
     [SerializeField]
     float attackRadius;
     [SerializeField]
-    ProjectTile projectile;
+    Projectile projectile;
     Enemy targetEnemy = null;
     float attackCounter;
     bool isAttacking = false;
@@ -58,7 +58,7 @@ public class TowerControl : MonoBehaviour
     public void Attack()
     {
         isAttacking = false;
-        ProjectTile newProjectTile = Instantiate(projectile) as ProjectTile;
+        Projectile newProjectTile = Instantiate(projectile) as Projectile;
         newProjectTile.transform.localPosition = transform.localPosition;
         if (newProjectTile.PType == projecttileType.arrow)
         {
@@ -82,19 +82,19 @@ public class TowerControl : MonoBehaviour
             StartCoroutine(MoveProjectTile(newProjectTile));
         }
     }
-    IEnumerator MoveProjectTile(ProjectTile projectTile)
+    IEnumerator MoveProjectTile(Projectile projectile)
     {
-        while (GetTargetDistance(targetEnemy)>0.20f && projectTile != null && targetEnemy!=null)
+        while (GetTargetDistance(targetEnemy)>0.20f && projectile != null && targetEnemy!=null)
         {
             var dir = targetEnemy.transform.localPosition - transform.localPosition;
             var angleDirection = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-            projectTile.transform.rotation = Quaternion.AngleAxis(angleDirection, Vector3.forward);
-            projectTile.transform.localPosition = Vector2.MoveTowards(projectTile.transform.localPosition, targetEnemy.transform.localPosition, 5f * Time.deltaTime);
+            projectile.transform.rotation = Quaternion.AngleAxis(angleDirection, Vector3.forward);
+            projectile.transform.localPosition = Vector2.MoveTowards(projectile.transform.localPosition, targetEnemy.transform.localPosition, 5f * Time.deltaTime);
             yield return null;
         }
-        if (projectTile != null || targetEnemy != null)
+        if (projectile != null || targetEnemy != null)
         {
-            Destroy(projectTile);
+            Destroy(projectile);
         }
     }
     private float GetTargetDistance(Enemy thisEnemy)

@@ -16,9 +16,9 @@ public class Manager : Loader<Manager>
     Text totalMoneyLabel;
     [SerializeField]
     Text currentWave;
-    [SerializeField]
-    Text totalEscapedLabel;
-    [SerializeField]
+	[SerializeField]
+	Text healthLabel;
+	[SerializeField]
     Text playBtnLabel;
     [SerializeField]
     Button playBtn;
@@ -33,38 +33,34 @@ public class Manager : Loader<Manager>
 
     int waveNumber = 0;
     int totalMoney = 50;
-    int totalEscaped = 0;
-    int roundEscaped = 0;
-    int totalKilled = 0;
+	int totalHealth = 20;
+	int health;
+	int totalKilled = 0;
     int whichEnemyToSpawn = 0;
     int enemiesToSpawn = 0;
     gameStatus currentState = gameStatus.play;
     AudioSource audioSource;
     public List<Enemy> EnemyList = new List<Enemy>();
 
-    public int TotalEscaped
-    {
-        get
-        {
-            return totalEscaped;
-        }
-        set
-        {
-            totalEscaped = value;
-        }
-    }
-    public int RoundEscaped
-    {
-        get
-        {
-            return roundEscaped;
-        }
-        set
-        {
-            roundEscaped = value;
-        }
-    }
-    public int TotalKilled
+	public int TotalHealth
+	{
+		get
+		{
+			return totalHealth;
+		}
+	}
+	public int Health
+	{
+		get
+		{
+			return health;
+		}
+		set
+		{
+			health = value;
+		}
+	}
+	public int TotalKilled
     {
         get
         {
@@ -99,7 +95,7 @@ public class Manager : Loader<Manager>
     // Start is called before the first frame update
     void Start()
     {
-        playBtn.gameObject.SetActive(false);
+        //playBtn.gameObject.SetActive(false);
         audioSource = GetComponent<AudioSource>();
         ShowMenu();
     }
@@ -142,18 +138,18 @@ public class Manager : Loader<Manager>
         }
         EnemyList.Clear();
     }
-    public void addMoney(int amount)
+    public void AddMoney(int amount)
     {
         TotalMoney += amount;
     }
-    public void subtractMoney(int amount)
+    public void SubtractMoney(int amount)
     {
         TotalMoney -= amount;
     }
     public void IsWaveOver()
     {
-        totalEscapedLabel.text = "Escaped " + TotalEscaped + "/ 10";
-        if ((RoundEscaped+TotalKilled)==totalEnemies)
+		healthLabel.text = health.ToString();
+        if ((TotalHealth-Health+TotalKilled)>=totalEnemies)
         {
             if (waveNumber <= enemies.Length)
             {
@@ -165,11 +161,11 @@ public class Manager : Loader<Manager>
     }
     public void SetCurrentGameState()
     {
-        if (totalEscaped >= 10)
+        if (Health <= 0)
         {
             currentState = gameStatus.gameover;
         }
-        else if(waveNumber==0 && (RoundEscaped + TotalKilled) == 0)
+        else if(waveNumber==0 && (TotalHealth-Health + TotalKilled) == 0)
         {
             currentState = gameStatus.play;
         }
@@ -192,20 +188,19 @@ public class Manager : Loader<Manager>
                 break;
             default:
                 totalEnemies = 1;
-                totalEscaped = 0;
+                Health = TotalHealth;
                 totalMoney = 50;
                 enemiesToSpawn = 0;
                 TowerManager.Instance.DestroyAllTower();
                 TowerManager.Instance.RenameTagBuildSite();
                 totalMoneyLabel.text = TotalMoney.ToString();
-                totalEscapedLabel.text = "Escaped " + TotalEscaped + "/ 10";
+                healthLabel.text = TotalHealth.ToString();
                 audioSource.PlayOneShot(SoundManager.Instance.Newgame);
                 break;
 
         }
         DestroyEnemies();
         TotalKilled = 0;
-        RoundEscaped = 0;
         currentWave.text = "Wave " + (waveNumber + 1);
         StartCoroutine(Spawn());
         playBtn.gameObject.SetActive(false);
