@@ -19,15 +19,8 @@ public class Enemy : MonoBehaviour
 	Animator anim;
 	int target = 0;
 	float navigationTime = 0;
-	bool isDead = false;
 
-	public bool IsDead
-	{
-		get
-		{
-			return isDead;
-		}
-	}
+	public bool IsDead { get; private set; } = false;
 	// Start is called before the first frame update
 	void Start()
 	{
@@ -42,7 +35,7 @@ public class Enemy : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		if (wayPoints != null && isDead == false)
+		if (wayPoints != null && IsDead == false)
 		{
 			navigationTime += Time.deltaTime;
 			if (navigationTime > navigation)
@@ -70,7 +63,6 @@ public class Enemy : MonoBehaviour
 
 		else if (collision.tag == "Finish")
 		{
-			Debug.Log("Entered finish");
 			Manager.Instance.Health -= 1;
 			Manager.Instance.UnregisterEnemy(this);
 			Manager.Instance.IsWaveOver();
@@ -86,7 +78,7 @@ public class Enemy : MonoBehaviour
 		{
 			health -= hitpoints;
 			//hurt
-			Manager.Instance.AudioSource.PlayOneShot(SoundManager.Instance.Hit);
+			Manager.Instance.AudioSrc.PlayOneShot(SoundManager.Instance.Hit);
 			anim.Play("Hurt");
 		}
 		else
@@ -98,10 +90,10 @@ public class Enemy : MonoBehaviour
 	}
 	public void Die()
 	{
-		isDead = true;
+		IsDead = true;
 		enemyCollider.enabled = false;
 		Manager.Instance.TotalKilled += 1;
-		Manager.Instance.AudioSource.PlayOneShot(SoundManager.Instance.Death);
+		Manager.Instance.AudioSrc.PlayOneShot(SoundManager.Instance.Death);
 		Manager.Instance.AddMoney(revertAmount);
 		Manager.Instance.IsWaveOver();
 	}

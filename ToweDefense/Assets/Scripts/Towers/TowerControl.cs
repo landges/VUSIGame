@@ -62,15 +62,15 @@ public class TowerControl : MonoBehaviour
         newProjectTile.transform.localPosition = transform.localPosition;
         if (newProjectTile.PType == projecttileType.arrow)
         {
-            Manager.Instance.AudioSource.PlayOneShot(SoundManager.Instance.Arrow);
+            Manager.Instance.AudioSrc.PlayOneShot(SoundManager.Instance.Arrow);
         }
         else if(newProjectTile.PType == projecttileType.fireball)
         {
-            Manager.Instance.AudioSource.PlayOneShot(SoundManager.Instance.Fireball);
+            Manager.Instance.AudioSrc.PlayOneShot(SoundManager.Instance.Fireball);
         }
         else if(newProjectTile.PType == projecttileType.rock)
         {
-            Manager.Instance.AudioSource.PlayOneShot(SoundManager.Instance.Rock);
+            Manager.Instance.AudioSrc.PlayOneShot(SoundManager.Instance.Rock);
         }
         if (targetEnemy == null)
         {

@@ -33,45 +33,15 @@ public class Manager : Loader<Manager>
 
     int waveNumber = 0;
     int totalMoney = 50;
-	int totalHealth = 20;
-	int health;
-	int totalKilled = 0;
-    int whichEnemyToSpawn = 0;
+	int whichEnemyToSpawn = 0;
     int enemiesToSpawn = 0;
     gameStatus currentState = gameStatus.play;
-    AudioSource audioSource;
-    public List<Enemy> EnemyList = new List<Enemy>();
+	public List<Enemy> EnemyList = new List<Enemy>();
 
-	public int TotalHealth
-	{
-		get
-		{
-			return totalHealth;
-		}
-	}
-	public int Health
-	{
-		get
-		{
-			return health;
-		}
-		set
-		{
-			health = value;
-		}
-	}
-	public int TotalKilled
-    {
-        get
-        {
-            return totalKilled;
-        }
-        set
-        {
-            totalKilled = value;
-        }
-    }
-    const float spawnDelay = 0.5f;
+	public int TotalHealth { get; } = 20;
+	public int Health { get; set; }
+	public int TotalKilled { get; set; } = 0;
+	const float spawnDelay = 0.5f;
 
     public int TotalMoney
     {
@@ -85,18 +55,13 @@ public class Manager : Loader<Manager>
             totalMoneyLabel.text = totalMoney.ToString();
         }
     }
-    public AudioSource AudioSource
+	public AudioSource AudioSrc { get; private set; }
+	// Start is called before the first frame update
+	void Start()
     {
-        get
-        {
-            return audioSource;
-        }
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-        //playBtn.gameObject.SetActive(false);
-        audioSource = GetComponent<AudioSource>();
+		Health = TotalHealth;
+        playBtn.gameObject.SetActive(false);
+		AudioSrc = GetComponent<AudioSource>();
         ShowMenu();
     }
     private void Update()
@@ -148,7 +113,7 @@ public class Manager : Loader<Manager>
     }
     public void IsWaveOver()
     {
-		healthLabel.text = health.ToString();
+		healthLabel.text = Health.ToString();
         if ((TotalHealth-Health+TotalKilled)>=totalEnemies)
         {
             if (waveNumber <= enemies.Length)
@@ -180,7 +145,7 @@ public class Manager : Loader<Manager>
     }
     public void PlayBtnPressed()
     {
-        switch (currentState)
+		switch (currentState)
         {
             case gameStatus.next:
                 waveNumber += 1;
@@ -189,21 +154,23 @@ public class Manager : Loader<Manager>
             default:
                 totalEnemies = 1;
                 Health = TotalHealth;
-                totalMoney = 50;
+                totalMoney = TotalMoney;
                 enemiesToSpawn = 0;
-                TowerManager.Instance.DestroyAllTower();
+                TowerManager.Instance.DestroyAllTowers();
                 TowerManager.Instance.RenameTagBuildSite();
-                totalMoneyLabel.text = TotalMoney.ToString();
+				totalMoneyLabel.text = TotalMoney.ToString();
                 healthLabel.text = TotalHealth.ToString();
-                audioSource.PlayOneShot(SoundManager.Instance.Newgame);
-                break;
+				Debug.Log(AudioSrc);
+				AudioSrc.PlayOneShot(SoundManager.Instance.Newgame);				
+				break;
 
         }
-        DestroyEnemies();
+		DestroyEnemies();
         TotalKilled = 0;
         currentWave.text = "Wave " + (waveNumber + 1);
         StartCoroutine(Spawn());
         playBtn.gameObject.SetActive(false);
+		
     }
     public void ShowMenu()
     {
@@ -211,7 +178,7 @@ public class Manager : Loader<Manager>
         {
             case gameStatus.gameover:
                 playBtnLabel.text = "Play Again?";
-                AudioSource.PlayOneShot(SoundManager.Instance.Gameover);
+                AudioSrc.PlayOneShot(SoundManager.Instance.Gameover);
                 break;
 
             case gameStatus.next:
