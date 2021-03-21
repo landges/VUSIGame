@@ -24,16 +24,22 @@ public class TowerManager : Loader<TowerManager>
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Vector2 mousPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            RaycastHit2D hit = Physics2D.Raycast(mousPoint, Vector2.zero);
-            if (hit.collider.tag == "TowerSide")
+			Vector2 mousePoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+			RaycastHit2D hit = Physics2D.Raycast(mousePoint, Vector2.zero);
+            if (hit.collider && hit.collider.tag == "TowerSide")
             {
                 buildTile = hit.collider;
-                buildTile.tag = "TowerSideFull";
+                buildTile.tag = "TowerFull";
                 RegisterBuildSite(buildTile);
                 PlaceTower(hit);
             }
-        }
+			else
+			{
+				//fix bug
+				DisableDrag();
+				towerBtnPressed = null;
+			}
+		}
         if (spriteRenderer.enabled)
         {
             FollowMouse();
@@ -55,7 +61,7 @@ public class TowerManager : Loader<TowerManager>
         }
         BuildList.Clear();
     }
-    public void DestroyAllTower()
+    public void DestroyAllTowers()
     {
         foreach(TowerControl tower in TowerList)
         {
@@ -70,7 +76,7 @@ public class TowerManager : Loader<TowerManager>
             TowerControl newTower = Instantiate(towerBtnPressed.TowerObject);
             newTower.transform.position = hit.transform.position;
             BuyTower(towerBtnPressed.TowerPrice);
-            Manager.Instance.AudioSource.PlayOneShot(SoundManager.Instance.TowerBuilt);
+            Manager.Instance.AudioSrc.PlayOneShot(SoundManager.Instance.TowerBuilt);
             RegisterTower(newTower);
             DisableDrag();
         }

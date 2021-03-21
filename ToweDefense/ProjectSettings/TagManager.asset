@@ -7,6 +7,10 @@ TagManager:
   - MovingPoint
   - Enemy
   - Tower
+  - TowerSide
+  - TowerFull
+  - Ground
+  - Projectile
   layers:
   - Default
   - TransparentFX
