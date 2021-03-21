@@ -160,7 +160,6 @@ public class Manager : Loader<Manager>
                 TowerManager.Instance.RenameTagBuildSite();
 				totalMoneyLabel.text = TotalMoney.ToString();
                 healthLabel.text = TotalHealth.ToString();
-				Debug.Log(AudioSrc);
 				AudioSrc.PlayOneShot(SoundManager.Instance.Newgame);				
 				break;
 
