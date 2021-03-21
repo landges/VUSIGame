@@ -7,6 +7,7 @@ TagManager:
   - MovingPoint
   - Enemy
   - Tower
+  - ProjectTile
   layers:
   - Default
   - TransparentFX
