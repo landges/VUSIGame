@@ -27,12 +27,12 @@ public class Manager : Loader<Manager>
     [SerializeField]
     Enemy[] enemies;
     [SerializeField]
-    int totalEnemies=5;
+    int totalEnemies;
     [SerializeField]
     int enemiesPerSpawn;
 
     int waveNumber = 0;
-    int totalMoney = 50;
+    int totalMoney = 80;
 	int whichEnemyToSpawn = 0;
     int enemiesToSpawn = 0;
     gameStatus currentState = gameStatus.play;
@@ -162,7 +162,6 @@ public class Manager : Loader<Manager>
                 healthLabel.text = TotalHealth.ToString();
 				AudioSrc.PlayOneShot(SoundManager.Instance.Newgame);				
 				break;
-
         }
 		DestroyEnemies();
         TotalKilled = 0;

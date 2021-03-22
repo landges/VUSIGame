@@ -95,6 +95,8 @@ public class Enemy : MonoBehaviour
 		Manager.Instance.TotalKilled += 1;
 		Manager.Instance.AudioSrc.PlayOneShot(SoundManager.Instance.Death);
 		Manager.Instance.AddMoney(revertAmount);
+		Manager.Instance.EnemyList.Remove(this);
+		Destroy(enemy.gameObject);
 		Manager.Instance.IsWaveOver();
 	}
 }

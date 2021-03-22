@@ -6,7 +6,10 @@ public class TowerControl : MonoBehaviour
 {
     [SerializeField]
     float timeBetweenAttacks;
-    [SerializeField]
+	//degrees per second
+	[SerializeField]
+	float rotationSpeed;
+	[SerializeField]
     float attackRadius;
     [SerializeField]
     Projectile projectile;
@@ -58,45 +61,73 @@ public class TowerControl : MonoBehaviour
     public void Attack()
     {
         isAttacking = false;
-        Projectile newProjectTile = Instantiate(projectile) as Projectile;
-        newProjectTile.transform.localPosition = transform.localPosition;
-        if (newProjectTile.PType == projecttileType.arrow)
-        {
-            Manager.Instance.AudioSrc.PlayOneShot(SoundManager.Instance.Arrow);
-        }
-        else if(newProjectTile.PType == projecttileType.fireball)
-        {
-            Manager.Instance.AudioSrc.PlayOneShot(SoundManager.Instance.Fireball);
-        }
-        else if(newProjectTile.PType == projecttileType.rock)
-        {
-            Manager.Instance.AudioSrc.PlayOneShot(SoundManager.Instance.Rock);
-        }
-        if (targetEnemy == null)
-        {
-            Destroy(newProjectTile);
-        }
-        else
-        {
-            //move  projecttile to enemy
-            StartCoroutine(MoveProjectTile(newProjectTile));
-        }
+		if (GetNearestEnemy() != null)
+		{
+			Projectile newProjectTile = Instantiate(projectile) as Projectile;
+			newProjectTile.transform.localPosition = transform.localPosition;
+			if (newProjectTile.PType == projecttileType.arrow)
+			{
+				Manager.Instance.AudioSrc.PlayOneShot(SoundManager.Instance.Arrow);
+			}
+			else if (newProjectTile.PType == projecttileType.fireball)
+			{
+				Manager.Instance.AudioSrc.PlayOneShot(SoundManager.Instance.Fireball);
+			}
+			else if (newProjectTile.PType == projecttileType.rock)
+			{
+				Manager.Instance.AudioSrc.PlayOneShot(SoundManager.Instance.Rock);
+			}
+			if (targetEnemy == null)
+			{
+				Destroy(newProjectTile.gameObject);
+			}
+			else
+			{
+				//move  projectile to enemy
+				StartCoroutine(MoveProjectTile(newProjectTile));
+			}
+		}
     }
     IEnumerator MoveProjectTile(Projectile projectile)
     {
-        while (GetTargetDistance(targetEnemy)>0.20f && projectile != null && targetEnemy!=null)
+        while ((projectile != null && targetEnemy != null) && (GetTargetDistance(targetEnemy)>0.20f||GetProjectileDistance(projectile)>0f))
         {
-            var dir = targetEnemy.transform.localPosition - transform.localPosition;
+			var dir = targetEnemy.transform.localPosition - transform.localPosition;
             var angleDirection = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
             projectile.transform.rotation = Quaternion.AngleAxis(angleDirection, Vector3.forward);
-            projectile.transform.localPosition = Vector2.MoveTowards(projectile.transform.localPosition, targetEnemy.transform.localPosition, 5f * Time.deltaTime);
-            yield return null;
+			//rotate tower
+			transform.rotation = Quaternion.AngleAxis(angleDirection - 90, Vector3.forward);
+			projectile.transform.localPosition = Vector2.MoveTowards(projectile.transform.localPosition, targetEnemy.transform.localPosition, 5f * Time.deltaTime);
+
+			yield return null;
         }
-        if (projectile != null || targetEnemy != null)
-        {
-            Destroy(projectile);
-        }
-    }
+		if (targetEnemy == null && projectile!=null)
+		{
+			while (projectile != null) {
+				targetEnemy = GetNearestEnemy(inRange: false);
+				if (targetEnemy == null)
+				{
+					Destroy(projectile.gameObject);
+				}
+				else
+				{
+					var dir = targetEnemy.transform.localPosition - projectile.transform.localPosition;
+					var angleDirection = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+					projectile.transform.rotation = Quaternion.AngleAxis(angleDirection, Vector3.forward);
+					projectile.transform.localPosition = Vector2.MoveTowards(projectile.transform.localPosition, targetEnemy.transform.localPosition, 5f * Time.deltaTime);
+					
+				}
+				yield return null;
+			}
+				
+		}
+		if (projectile != null)
+		{
+			Destroy(projectile.gameObject);
+		}
+		yield return null;
+
+	}
     private float GetTargetDistance(Enemy thisEnemy)
     {
         if (thisEnemy == null)
@@ -104,12 +135,20 @@ public class TowerControl : MonoBehaviour
             thisEnemy = GetNearestEnemy();
             if(thisEnemy == null)
             {
-                return 0f;
+                return float.PositiveInfinity;
             }
         }
         return Mathf.Abs(Vector2.Distance(transform.localPosition, thisEnemy.transform.localPosition));
     }
-    private List<Enemy> GetEnemiesInRange()
+	private float GetProjectileDistance(Projectile thisProjectile)
+	{
+		if (thisProjectile == null)
+		{
+			return 0f;
+		}
+		return Mathf.Abs(Vector2.Distance(transform.localPosition, thisProjectile.transform.localPosition));
+	}
+	private List<Enemy> GetEnemiesInRange()
     {
         List<Enemy> enemiesInRange = new List<Enemy>();
         foreach (Enemy enemy in Manager.Instance.EnemyList)
@@ -121,11 +160,16 @@ public class TowerControl : MonoBehaviour
         }
         return enemiesInRange;
     }
-    private Enemy GetNearestEnemy()
+    private Enemy GetNearestEnemy(bool inRange=true)
     {
         Enemy nearestEnemy = null;
         float smallestDistance = float.PositiveInfinity;
-        foreach(Enemy enemy in GetEnemiesInRange())
+		List<Enemy> enemiesToLook = new List<Enemy>();
+		if (inRange)
+			enemiesToLook = GetEnemiesInRange();
+		else
+			enemiesToLook = Manager.Instance.EnemyList;
+		foreach (Enemy enemy in enemiesToLook)
         {
             if (Vector2.Distance(transform.localPosition, enemy.transform.localPosition) < smallestDistance)
             {
