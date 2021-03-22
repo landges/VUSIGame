@@ -25,7 +25,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6155656770874055902}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 4.6215143, y: 0.0004937053, z: -4.841956}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -44,6 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06565bad4018d874cbb50ba84f502376, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  towerPanel: {fileID: 0}
+  backBtn: {fileID: 0}
 --- !u!212 &1210103289393359176
 SpriteRenderer:
   m_ObjectHideFlags: 0
