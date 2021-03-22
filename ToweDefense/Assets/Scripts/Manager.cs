@@ -32,7 +32,7 @@ public class Manager : Loader<Manager>
     int enemiesPerSpawn;
 
     int waveNumber = 0;
-    int totalMoney = 50;
+    int totalMoney = 500;
 	int whichEnemyToSpawn = 0;
     int enemiesToSpawn = 0;
     gameStatus currentState = gameStatus.play;
@@ -199,7 +199,7 @@ public class Manager : Loader<Manager>
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            TowerManager.Instance.DisableDrag();
+            // TowerManager.Instance.DisableDrag();
             TowerManager.Instance.towerBtnPressed = null;
         }
     }

@@ -2,23 +2,31 @@
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TowerManager : Loader<TowerManager>
 {
     public TowerButton towerBtnPressed{get; set;}
     SpriteRenderer spriteRenderer;
-
+    bool panelIsOpen;
+    [SerializeField]
+    GameObject towerPanel;
+    [SerializeField]
+    public Button backBtn;
     private List<TowerControl> TowerList = new List<TowerControl>();
     private List<Collider2D> BuildList = new List<Collider2D>();
     private Collider2D buildTile;
+    private RaycastHit2D hitTile;
     // Start is called before the first frame update
     void Start()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        panelIsOpen=false;
+        towerPanel.SetActive(false);
+        // backBtn=GetComponent<Button>();
+        backBtn.gameObject.SetActive(false);
         buildTile = GetComponent<Collider2D>();
-        spriteRenderer.enabled = false;
+        // hitTile = GetComponent<RaycastHit2D>();
     }
-
     // Update is called once per frame
     void Update()
     {
@@ -28,26 +36,32 @@ public class TowerManager : Loader<TowerManager>
 			RaycastHit2D hit = Physics2D.Raycast(mousePoint, Vector2.zero);
             if (hit.collider && hit.collider.tag == "TowerSide")
             {
+                towerPanel.SetActive(true);
+                backBtn.gameObject.SetActive(true);
                 buildTile = hit.collider;
-                buildTile.tag = "TowerFull";
-                RegisterBuildSite(buildTile);
-                PlaceTower(hit);
+                hitTile = hit;
+                // buildTile.tag = "TowerFull";
+                
+                // RegisterBuildSite(buildTile);
+                // PlaceTower(hit);
             }
-			else
-			{
-				//fix bug
-				DisableDrag();
-				towerBtnPressed = null;
-			}
+		
 		}
-        if (spriteRenderer.enabled)
-        {
-            FollowMouse();
-        }
+    }
+    public void ClocePanel()
+    {
+        towerPanel.SetActive(false);
+        backBtn.gameObject.SetActive(false);
+        // backBtn.SetActive(false);
     }
     public void RegisterBuildSite(Collider2D buildTag)
     {
         BuildList.Add(buildTag);
+    }
+    // покупка башни: вычет денег из общего счета игрока
+    public void BuyTower(int price)
+    {
+        Manager.Instance.SubtractMoney(price);
     }
     public void RegisterTower(TowerControl tower)
     {
@@ -71,41 +85,29 @@ public class TowerManager : Loader<TowerManager>
     }
     public void PlaceTower(RaycastHit2D hit)
     {
-        if (!EventSystem.current.IsPointerOverGameObject() && towerBtnPressed !=null)
+        if (towerBtnPressed !=null)
         {
             TowerControl newTower = Instantiate(towerBtnPressed.TowerObject);
             newTower.transform.position = hit.transform.position;
             BuyTower(towerBtnPressed.TowerPrice);
             Manager.Instance.AudioSrc.PlayOneShot(SoundManager.Instance.TowerBuilt);
             RegisterTower(newTower);
-            DisableDrag();
+            // DisableDrag();
         }
-    }
-    public void BuyTower(int price)
-    {
-        Manager.Instance.SubtractMoney(price);
     }
     public void SelectTower(TowerButton towerSelected)
     {
         if (towerSelected.TowerPrice <= Manager.Instance.TotalMoney)
         {
             towerBtnPressed = towerSelected;
-            EnableDrag(towerBtnPressed.DragSprite);
+            // EnableDrag(towerBtnPressed.DragSprite);
+            buildTile.tag = "TowerFull";
+                
+            RegisterBuildSite(buildTile);
+            PlaceTower(hitTile);
         }
         
-    }
-    public void FollowMouse()
-    {
-        transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        transform.position = new Vector2(transform.position.x, transform.position.y);
-    }
-    public void EnableDrag(Sprite sprite)
-    {
-        spriteRenderer.enabled = true;
-        spriteRenderer.sprite = sprite;
-    }
-    public void DisableDrag()
-    {
-        spriteRenderer.enabled = false;
+        
+        
     }
 }
