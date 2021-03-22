@@ -29,7 +29,7 @@ public class TowerManager : Loader<TowerManager>
             if (hit.collider && hit.collider.tag == "TowerSide")
             {
                 buildTile = hit.collider;
-                buildTile.tag = "TowerFull";
+                // buildTile.tag = "TowerFull";
                 RegisterBuildSite(buildTile);
                 PlaceTower(hit);
             }
