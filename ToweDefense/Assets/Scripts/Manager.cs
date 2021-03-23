@@ -32,7 +32,7 @@ public class Manager : Loader<Manager>
     int enemiesPerSpawn;
 
     int waveNumber = 0;
-    int totalMoney = 500;
+    int totalMoney = 80;
 	int whichEnemyToSpawn = 0;
     int enemiesToSpawn = 0;
     gameStatus currentState = gameStatus.play;

@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2863614490099205141}
-  - component: {fileID: 6886425452339340567}
   - component: {fileID: 4738457806896541828}
+  - component: {fileID: 2055881476236119126}
   m_Layer: 0
   m_Name: SoundManager
   m_TagString: Untagged
@@ -32,7 +32,28 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!82 &6886425452339340567
+--- !u!114 &4738457806896541828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3338062763407894627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e48cfc6655c1c434f9cfa98bc6319c67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  arrow: {fileID: 8300000, guid: 5bfd5ac39ad58264f9fe34f72ccdd720, type: 3}
+  death: {fileID: 8300000, guid: 66f50f2b92fdaeb4e86bf62225f000b6, type: 3}
+  fireball: {fileID: 8300000, guid: 28fff482a4958e44c90234731a149344, type: 3}
+  gameover: {fileID: 8300000, guid: e7ce1e2867c262e4294b32f082ba7dd1, type: 3}
+  hit: {fileID: 8300000, guid: 5ea8efc4cef88b7469fbd857add205cf, type: 3}
+  level: {fileID: 8300000, guid: 84281dfaa60fa01409a4a90ea018b659, type: 3}
+  newgame: {fileID: 8300000, guid: 80956872daa57064b870e3242363f8f4, type: 3}
+  rock: {fileID: 8300000, guid: 460f741bf36899440abb8be3950405ff, type: 3}
+  towerBuilt: {fileID: 8300000, guid: ce7904e87dcd2b04db17f42b0ccb5132, type: 3}
+--- !u!82 &2055881476236119126
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -128,24 +149,3 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &4738457806896541828
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3338062763407894627}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e48cfc6655c1c434f9cfa98bc6319c67, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  arrow: {fileID: 8300000, guid: 5bfd5ac39ad58264f9fe34f72ccdd720, type: 3}
-  death: {fileID: 8300000, guid: 66f50f2b92fdaeb4e86bf62225f000b6, type: 3}
-  fireball: {fileID: 8300000, guid: 28fff482a4958e44c90234731a149344, type: 3}
-  gameover: {fileID: 8300000, guid: e7ce1e2867c262e4294b32f082ba7dd1, type: 3}
-  hit: {fileID: 8300000, guid: 5ea8efc4cef88b7469fbd857add205cf, type: 3}
-  level: {fileID: 8300000, guid: 84281dfaa60fa01409a4a90ea018b659, type: 3}
-  newgame: {fileID: 8300000, guid: 80956872daa57064b870e3242363f8f4, type: 3}
-  rock: {fileID: 8300000, guid: 460f741bf36899440abb8be3950405ff, type: 3}
-  towerBuilt: {fileID: 8300000, guid: ce7904e87dcd2b04db17f42b0ccb5132, type: 3}
