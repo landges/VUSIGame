@@ -44,7 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06565bad4018d874cbb50ba84f502376, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  towerPanel: {fileID: 0}
+  towerPanel: {fileID: 8321959823616691762, guid: cf5b1d52f70fc774a9bf51139e0b12fe,
+    type: 3}
   towerInfo: {fileID: 0}
   choiceTower: {fileID: 0}
   damageLabel: {fileID: 0}

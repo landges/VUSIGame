@@ -33569,6 +33569,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1193615110 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7616584076210866953, guid: cf5b1d52f70fc774a9bf51139e0b12fe,
+    type: 3}
+  m_PrefabInstance: {fileID: 8321959824665807994}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1198344343
 GameObject:
   m_ObjectHideFlags: 0
@@ -36497,6 +36509,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1288290150 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2694974136920064996, guid: cf5b1d52f70fc774a9bf51139e0b12fe,
+    type: 3}
+  m_PrefabInstance: {fileID: 8321959824665807994}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1289704156
 GameObject:
   m_ObjectHideFlags: 0
@@ -45331,6 +45355,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1593491000 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5124713311921313449, guid: cf5b1d52f70fc774a9bf51139e0b12fe,
+    type: 3}
+  m_PrefabInstance: {fileID: 8321959824665807994}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1596452863
 GameObject:
   m_ObjectHideFlags: 0
@@ -60128,6 +60164,11 @@ PrefabInstance:
       objectReference: {fileID: 743773395}
     - target: {fileID: 6155656770874055903, guid: c08c716763fb4af4f96330fc69b3c4c8,
         type: 3}
+      propertyPath: towerImage
+      value: 
+      objectReference: {fileID: 1593491000}
+    - target: {fileID: 6155656770874055903, guid: c08c716763fb4af4f96330fc69b3c4c8,
+        type: 3}
       propertyPath: towerPanel
       value: 
       objectReference: {fileID: 1106887240}
@@ -60136,6 +60177,16 @@ PrefabInstance:
       propertyPath: choiceTower
       value: 
       objectReference: {fileID: 459189480}
+    - target: {fileID: 6155656770874055903, guid: c08c716763fb4af4f96330fc69b3c4c8,
+        type: 3}
+      propertyPath: damageLabel
+      value: 
+      objectReference: {fileID: 1193615110}
+    - target: {fileID: 6155656770874055903, guid: c08c716763fb4af4f96330fc69b3c4c8,
+        type: 3}
+      propertyPath: radiusLabel
+      value: 
+      objectReference: {fileID: 1288290150}
     - target: {fileID: 6155656771683539269, guid: c08c716763fb4af4f96330fc69b3c4c8,
         type: 3}
       propertyPath: m_RootOrder
@@ -60427,7 +60478,7 @@ PrefabInstance:
     - target: {fileID: 8579295192449613899, guid: cf5b1d52f70fc774a9bf51139e0b12fe,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf5b1d52f70fc774a9bf51139e0b12fe, type: 3}
