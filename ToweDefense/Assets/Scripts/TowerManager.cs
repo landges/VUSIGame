@@ -12,11 +12,24 @@ public class TowerManager : Loader<TowerManager>
     [SerializeField]
     GameObject towerPanel;
     [SerializeField]
+    GameObject towerInfo;
+    [SerializeField]
+    GameObject choiceTower;
+
+    [SerializeField]
+    Text damageLabel;
+    [SerializeField]
+    Text radiusLabel;
+    [SerializeField]
+    Image towerImage;
+    [SerializeField]
     public Button backBtn;
     private List<TowerControl> TowerList = new List<TowerControl>();
     private List<Collider2D> BuildList = new List<Collider2D>();
     private Collider2D buildTile;
     private RaycastHit2D hitTile;
+    private TowerControl selectTower;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +38,7 @@ public class TowerManager : Loader<TowerManager>
         // backBtn=GetComponent<Button>();
         backBtn.gameObject.SetActive(false);
         buildTile = GetComponent<Collider2D>();
+        selectTower=GetComponent<TowerControl>();
         // hitTile = GetComponent<RaycastHit2D>();
     }
     // Update is called once per frame
@@ -34,25 +48,62 @@ public class TowerManager : Loader<TowerManager>
         {
 			Vector2 mousePoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 			RaycastHit2D hit = Physics2D.Raycast(mousePoint, Vector2.zero);
-            if (hit.collider && hit.collider.tag == "TowerSide")
+            if (hit.collider && (hit.collider.tag == "TowerSide"  || hit.collider.tag == "TowerFull"))
             {
                 towerPanel.SetActive(true);
                 backBtn.gameObject.SetActive(true);
                 buildTile = hit.collider;
                 hitTile = hit;
+                if(hit.collider.tag == "TowerSide")
+                {
+                    towerInfo.SetActive(false);
+                    choiceTower.SetActive(true);
+                }
+                else if(hit.collider.tag == "TowerFull")
+                {
+                    choiceTower.SetActive(false);
+                    towerInfo.SetActive(true);
+                    foreach(TowerControl tower in TowerList)
+                    {
+                        if(tower.transform.position == hit.transform.position){
+                            selectTower=tower;
+                            break;
+                        }
+                    }
+                    if(selectTower!=null){
+                        ViewTowerInfo(selectTower);
+                    }
+                }
+               
                 // buildTile.tag = "TowerFull";
                 
                 // RegisterBuildSite(buildTile);
                 // PlaceTower(hit);
             }
-		
+            // else{
+            //     towerPanel.SetActive(false);
+            // }		
 		}
+    }
+    public void ViewTowerInfo(TowerControl tower)
+    {
+        radiusLabel.text="Radius: "+tower.attackRadius.ToString();
+        damageLabel.text="Damage: "+tower.projectile.AttackDamage;
+        // towerImage=tower.SpriteRenderer().Sprite;
+        SpriteRenderer m_SpriteRenderer = tower.GetComponent<SpriteRenderer>();
+        Sprite sprite=m_SpriteRenderer.sprite;
+        towerImage.sprite=sprite;
     }
     public void ClocePanel()
     {
         towerPanel.SetActive(false);
         backBtn.gameObject.SetActive(false);
         // backBtn.SetActive(false);
+    }
+    public void DestroyTower()
+    {
+        Debug.Log("destroy");
+        
     }
     public void RegisterBuildSite(Collider2D buildTag)
     {

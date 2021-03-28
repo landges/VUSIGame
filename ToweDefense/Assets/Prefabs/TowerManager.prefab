@@ -45,6 +45,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   towerPanel: {fileID: 0}
+  towerInfo: {fileID: 0}
+  choiceTower: {fileID: 0}
+  damageLabel: {fileID: 0}
+  radiusLabel: {fileID: 0}
+  towerImage: {fileID: 0}
   backBtn: {fileID: 0}
 --- !u!212 &1210103289393359176
 SpriteRenderer:

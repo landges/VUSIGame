@@ -8,11 +8,11 @@ public class TowerControl : MonoBehaviour
     float timeBetweenAttacks;
 	//degrees per second
 	[SerializeField]
-	float rotationSpeed;
+	public float rotationSpeed;
 	[SerializeField]
-    float attackRadius;
+    public float attackRadius;
     [SerializeField]
-    Projectile projectile;
+    public Projectile projectile;
     Enemy targetEnemy = null;
     float attackCounter;
     bool isAttacking = false;
