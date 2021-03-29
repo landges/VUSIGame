@@ -13,4 +13,10 @@ public class LevelManager : MonoBehaviour
     {
         SceneManager.LoadScene(levelIndex);
     }
+
+    public void QuitGame()
+    {
+        Debug.Log("QUIT!");
+        Application.Quit();
+    }
 }
