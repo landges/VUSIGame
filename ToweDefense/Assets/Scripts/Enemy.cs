@@ -85,8 +85,7 @@ public class Enemy : MonoBehaviour
 		{
 			anim.SetTrigger("didDie");
 			//dying
-			Debug.Log("animation");
-			Die();
+			Die();			
 		}
 	}
 	public void Die()
@@ -97,7 +96,7 @@ public class Enemy : MonoBehaviour
 		Manager.Instance.AudioSrc.PlayOneShot(SoundManager.Instance.Death);
 		Manager.Instance.AddMoney(revertAmount);
 		Manager.Instance.EnemyList.Remove(this);
-		// Destroy(enemy.gameObject);
+		Destroy(enemy.gameObject,anim.GetCurrentAnimatorStateInfo(0).length);
 		Manager.Instance.IsWaveOver();
 	}
 }
