@@ -60532,7 +60532,7 @@ PrefabInstance:
     - target: {fileID: 5950080435779933299, guid: 2953473fef5891d47b53f80ed378a295,
         type: 3}
       propertyPath: totalWaves
-      value: 3
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5950080435779933299, guid: 2953473fef5891d47b53f80ed378a295,
         type: 3}

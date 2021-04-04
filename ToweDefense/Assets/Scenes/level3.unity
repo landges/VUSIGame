@@ -47125,6 +47125,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Pause_menu
       objectReference: {fileID: 0}
+    - target: {fileID: 2043762120726697212, guid: 397c44df80622354f9eb8b08f6f12d4d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2043762120726697213, guid: 397c44df80622354f9eb8b08f6f12d4d,
         type: 3}
       propertyPath: m_Pivot.x
@@ -61319,7 +61324,7 @@ PrefabInstance:
     - target: {fileID: 5950080435779933299, guid: 2953473fef5891d47b53f80ed378a295,
         type: 3}
       propertyPath: totalWaves
-      value: 3
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5950080435779933299, guid: 2953473fef5891d47b53f80ed378a295,
         type: 3}
@@ -61542,7 +61547,12 @@ PrefabInstance:
     - target: {fileID: 8321959823424953732, guid: cf5b1d52f70fc774a9bf51139e0b12fe,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 87.90001
+      value: -109
+      objectReference: {fileID: 0}
+    - target: {fileID: 8321959823424953732, guid: cf5b1d52f70fc774a9bf51139e0b12fe,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 244.39
       objectReference: {fileID: 0}
     - target: {fileID: 8321959823616691762, guid: cf5b1d52f70fc774a9bf51139e0b12fe,
         type: 3}
@@ -61552,7 +61562,7 @@ PrefabInstance:
     - target: {fileID: 8321959823616691762, guid: cf5b1d52f70fc774a9bf51139e0b12fe,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8321959823616691763, guid: cf5b1d52f70fc774a9bf51139e0b12fe,
         type: 3}

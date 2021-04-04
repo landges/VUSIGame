@@ -1202,7 +1202,7 @@ GameObject:
   m_Component:
   - component: {fileID: 636346530}
   - component: {fileID: 636346529}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: sound
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1247,7 +1247,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1000
   m_Sprite: {fileID: 3498357288856157148, guid: e2a272891b04ef24bb0a33196705ceaf,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

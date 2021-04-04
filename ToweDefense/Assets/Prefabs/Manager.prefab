@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ce7beff33d46c445aa1f2d135638c36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalWaves: 3
+  totalWaves: 10
   totalMoneyLabel: {fileID: 0}
   currentWave: {fileID: 0}
   healthLabel: {fileID: 0}

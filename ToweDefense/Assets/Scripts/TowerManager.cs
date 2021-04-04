@@ -143,6 +143,10 @@ public class TowerManager : Loader<TowerManager>
             BuyTower(towerBtnPressed.TowerPrice);
             Manager.Instance.AudioSrc.PlayOneShot(SoundManager.Instance.TowerBuilt);
             RegisterTower(newTower);
+            
+            choiceTower.SetActive(false);
+            towerInfo.SetActive(true);
+            ViewTowerInfo(newTower);
             // DisableDrag();
         }
     }
@@ -152,8 +156,7 @@ public class TowerManager : Loader<TowerManager>
         {
             towerBtnPressed = towerSelected;
             // EnableDrag(towerBtnPressed.DragSprite);
-            buildTile.tag = "TowerFull";
-                
+            buildTile.tag = "TowerFull";  
             RegisterBuildSite(buildTile);
             PlaceTower(hitTile);
         }
