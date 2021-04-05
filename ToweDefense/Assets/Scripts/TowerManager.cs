@@ -66,7 +66,10 @@ public class TowerManager : Loader<TowerManager>
                     foreach(TowerControl tower in TowerList)
                     {
                         if(tower.transform.position == hit.transform.position){
-                            selectTower.DisableRange();
+                            if (selectTower != null)
+                            {
+                                selectTower.DisableRange();
+                            }
                             selectTower=tower;
                             break;
                         }
