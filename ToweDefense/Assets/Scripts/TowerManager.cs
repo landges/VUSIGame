@@ -75,12 +75,12 @@ public class TowerManager : Loader<TowerManager>
                         ViewTowerInfo();
                     }
                 }
-            }		
+            }
+            
 		}
     }
     public void ViewTowerInfo()
     {
-        
         radiusLabel.text="Radius: "+selectTower.attackRadius.ToString();
         damageLabel.text="Damage: "+selectTower.projectile.AttackDamage;
         SpriteRenderer m_SpriteRenderer = selectTower.GetComponent<SpriteRenderer>();
@@ -90,15 +90,35 @@ public class TowerManager : Loader<TowerManager>
     }
     public void ClocePanel()
     {
-        selectTower.DisableRange();
+        if (selectTower != null)
+        {
+            selectTower.DisableRange();
+        }
         towerPanel.SetActive(false);
         backBtn.gameObject.SetActive(false);
-        // backBtn.SetActive(false);
+        //backBtn.SetActive(false);
+        //DestrTower();
     }
-    public void DestroyTower()
+
+    public void DestrTower()
     {
-        Debug.Log("destroy");
-        
+        Manager.Instance.TotalMoney += selectTower.sellPrice / 2;
+        TowerList.Remove(this.selectTower);
+        Collider2D selectBuild = null;
+        foreach (Collider2D buildTag in BuildList)
+        {
+            if (buildTag.transform.position == selectTower.transform.position)
+            {
+                selectBuild = buildTag;
+                buildTag.tag = "TowerSide";
+                break;
+            }
+        }
+        BuildList.Remove(selectBuild);
+        Destroy(selectTower.gameObject);
+        selectTower = null;
+        towerInfo.SetActive(false);
+        choiceTower.SetActive(true);
     }
     public void RegisterBuildSite(Collider2D buildTag)
     {
@@ -134,6 +154,7 @@ public class TowerManager : Loader<TowerManager>
         if (towerBtnPressed !=null)
         {
             TowerControl newTower = Instantiate(towerBtnPressed.TowerObject);
+            newTower.sellPrice = towerBtnPressed.TowerPrice;
             newTower.transform.position = hit.transform.position;
             BuyTower(towerBtnPressed.TowerPrice);
             Manager.Instance.AudioSrc.PlayOneShot(SoundManager.Instance.TowerBuilt);

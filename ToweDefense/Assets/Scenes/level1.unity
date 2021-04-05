@@ -60536,6 +60536,11 @@ PrefabInstance:
       objectReference: {fileID: 743773395}
     - target: {fileID: 6155656770874055903, guid: c08c716763fb4af4f96330fc69b3c4c8,
         type: 3}
+      propertyPath: destroyBtn
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6155656770874055903, guid: c08c716763fb4af4f96330fc69b3c4c8,
+        type: 3}
       propertyPath: towerImage
       value: 
       objectReference: {fileID: 1593491000}
@@ -60692,6 +60697,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2118713597}
     m_Modifications:
+    - target: {fileID: 26478735, guid: cf5b1d52f70fc774a9bf51139e0b12fe, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 945945607}
     - target: {fileID: 8321959823068558458, guid: cf5b1d52f70fc774a9bf51139e0b12fe,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -60701,11 +60710,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: TowerPanel
-      objectReference: {fileID: 0}
-    - target: {fileID: 8321959823616691762, guid: cf5b1d52f70fc774a9bf51139e0b12fe,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8321959823616691763, guid: cf5b1d52f70fc774a9bf51139e0b12fe,
         type: 3}

@@ -13,6 +13,8 @@ public class TowerControl : MonoBehaviour
     public float attackRadius;
     [SerializeField]
     public Projectile projectile;
+    [SerializeField]
+    public int sellPrice { get; set; }
     Enemy targetEnemy = null;
     float attackCounter;
     bool isAttacking = false;
