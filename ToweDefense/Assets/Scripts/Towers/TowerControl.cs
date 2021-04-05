@@ -17,6 +17,7 @@ public class TowerControl : MonoBehaviour
     public int sellPrice { get; set; }
     Enemy targetEnemy = null;
     float attackCounter;
+	bool hasTurned = false;
     bool isAttacking = false;
     private SpriteRenderer rangeSpriteRenderer;
     // Start is called before the first frame update
@@ -31,36 +32,52 @@ public class TowerControl : MonoBehaviour
         if(targetEnemy == null || targetEnemy.IsDead)
         {
             Enemy nearestEnemy = GetNearestEnemy();
-            if (nearestEnemy != null && Vector2.Distance(transform.localPosition, nearestEnemy.transform.localPosition) <=attackRadius)
+            if (nearestEnemy != null)
             {
                 targetEnemy = nearestEnemy;
             }
         }
         else
         {
-            if (attackCounter <= 0)
-            {
-                isAttacking = true;
-                attackCounter = timeBetweenAttacks;
+			StartCoroutine(RotateTower());
+			if (attackCounter <= 0) //hasTurned
+			{
+				isAttacking = true;
+				attackCounter = timeBetweenAttacks;
             }
             else
             {
                 isAttacking = false;
-            }
+			}
             if (Vector2.Distance(transform.localPosition, targetEnemy.transform.localPosition) > attackRadius)
             {
                 targetEnemy = null;
-            }
+				hasTurned = false;
+			}
         }
     }
     public void FixedUpdate()
     {
         if (isAttacking == true)
         {
+			hasTurned = false;
 			Attack();
 		}
     }
-    public void Attack()
+	private IEnumerator RotateTower()
+	{
+		while (!hasTurned && targetEnemy!=null)
+		{
+			var dir = targetEnemy.transform.localPosition - transform.localPosition;
+			var targetAngle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+			transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, targetAngle),
+				rotationSpeed * Time.deltaTime);
+			if (Mathf.Abs(targetAngle) < 1.5f)
+				hasTurned = true;
+			yield return null;
+		}
+	}
+	public void Attack()
     {
         isAttacking = false;
 		hasTurned = false;
@@ -98,8 +115,6 @@ public class TowerControl : MonoBehaviour
 			var dir = targetEnemy.transform.localPosition - transform.localPosition;
             var angleDirection = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
             projectile.transform.rotation = Quaternion.AngleAxis(angleDirection, Vector3.forward);
-			//rotate tower
-			transform.rotation = Quaternion.AngleAxis(angleDirection - 90, Vector3.forward);
 			projectile.transform.localPosition = Vector2.MoveTowards(projectile.transform.localPosition, targetEnemy.transform.localPosition, 5f * Time.deltaTime);
 
 			yield return null;
