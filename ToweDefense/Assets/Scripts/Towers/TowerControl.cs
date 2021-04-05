@@ -57,12 +57,13 @@ public class TowerControl : MonoBehaviour
     {
         if (isAttacking == true)
         {
-            Attack();
-        }
+			Attack();
+		}
     }
     public void Attack()
     {
         isAttacking = false;
+		hasTurned = false;
 		if (GetNearestEnemy() != null)
 		{
 			Projectile newProjectTile = Instantiate(projectile) as Projectile;
