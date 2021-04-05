@@ -16,12 +16,12 @@ public class TowerControl : MonoBehaviour
     Enemy targetEnemy = null;
     float attackCounter;
     bool isAttacking = false;
+    private SpriteRenderer rangeSpriteRenderer;
     // Start is called before the first frame update
-    void Start()
-    {
-
+    void Init(){
+        rangeSpriteRenderer=this.transform.GetChild(0).GetComponent<SpriteRenderer>();
+        rangeSpriteRenderer.transform.localScale=new Vector3(this.attackRadius*2f,this.attackRadius*2f,1);
     }
-
     // Update is called once per frame
     void Update()
     {
@@ -178,5 +178,14 @@ public class TowerControl : MonoBehaviour
             }
         }
         return nearestEnemy;
+    }
+    public void EnableRange(){
+        if(rangeSpriteRenderer == null){
+            Init();
+        }
+        rangeSpriteRenderer.enabled=true;
+    }
+    public void DisableRange(){
+        rangeSpriteRenderer.enabled=false;
     }
 }

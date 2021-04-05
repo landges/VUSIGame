@@ -35,11 +35,8 @@ public class TowerManager : Loader<TowerManager>
     {
         panelIsOpen=false;
         towerPanel.SetActive(false);
-        // backBtn=GetComponent<Button>();
         backBtn.gameObject.SetActive(false);
         buildTile = GetComponent<Collider2D>();
-        selectTower=GetComponent<TowerControl>();
-        // hitTile = GetComponent<RaycastHit2D>();
     }
     // Update is called once per frame
     void Update()
@@ -56,6 +53,9 @@ public class TowerManager : Loader<TowerManager>
                 hitTile = hit;
                 if(hit.collider.tag == "TowerSide")
                 {
+                    if(selectTower != null){
+                        selectTower.DisableRange();
+                    }
                     towerInfo.SetActive(false);
                     choiceTower.SetActive(true);
                 }
@@ -66,36 +66,31 @@ public class TowerManager : Loader<TowerManager>
                     foreach(TowerControl tower in TowerList)
                     {
                         if(tower.transform.position == hit.transform.position){
+                            selectTower.DisableRange();
                             selectTower=tower;
                             break;
                         }
                     }
                     if(selectTower!=null){
-                        ViewTowerInfo(selectTower);
+                        ViewTowerInfo();
                     }
                 }
-               
-                // buildTile.tag = "TowerFull";
-                
-                // RegisterBuildSite(buildTile);
-                // PlaceTower(hit);
-            }
-            // else{
-            //     towerPanel.SetActive(false);
-            // }		
+            }		
 		}
     }
-    public void ViewTowerInfo(TowerControl tower)
+    public void ViewTowerInfo()
     {
-        radiusLabel.text="Radius: "+tower.attackRadius.ToString();
-        damageLabel.text="Damage: "+tower.projectile.AttackDamage;
-        // towerImage=tower.SpriteRenderer().Sprite;
-        SpriteRenderer m_SpriteRenderer = tower.GetComponent<SpriteRenderer>();
+        
+        radiusLabel.text="Radius: "+selectTower.attackRadius.ToString();
+        damageLabel.text="Damage: "+selectTower.projectile.AttackDamage;
+        SpriteRenderer m_SpriteRenderer = selectTower.GetComponent<SpriteRenderer>();
         Sprite sprite=m_SpriteRenderer.sprite;
         towerImage.sprite=sprite;
+        selectTower.EnableRange();
     }
     public void ClocePanel()
     {
+        selectTower.DisableRange();
         towerPanel.SetActive(false);
         backBtn.gameObject.SetActive(false);
         // backBtn.SetActive(false);
@@ -143,11 +138,12 @@ public class TowerManager : Loader<TowerManager>
             BuyTower(towerBtnPressed.TowerPrice);
             Manager.Instance.AudioSrc.PlayOneShot(SoundManager.Instance.TowerBuilt);
             RegisterTower(newTower);
-            
+            if(selectTower != null){
+                selectTower.DisableRange();
+            }
+            selectTower=newTower;
             choiceTower.SetActive(false);
             towerInfo.SetActive(true);
-            ViewTowerInfo(newTower);
-            // DisableDrag();
         }
     }
     public void SelectTower(TowerButton towerSelected)
@@ -159,6 +155,7 @@ public class TowerManager : Loader<TowerManager>
             buildTile.tag = "TowerFull";  
             RegisterBuildSite(buildTile);
             PlaceTower(hitTile);
+            ViewTowerInfo();
         }
         
         

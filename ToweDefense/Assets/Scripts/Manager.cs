@@ -42,7 +42,6 @@ public class Manager : Loader<Manager>
 	public int Health { get; set; }
 	public int TotalKilled { get; set; } = 0;
 	const float spawnDelay = 0.5f;
-
     public int TotalMoney
     {
         get
