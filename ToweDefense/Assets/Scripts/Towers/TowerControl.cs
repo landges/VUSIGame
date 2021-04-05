@@ -40,7 +40,7 @@ public class TowerControl : MonoBehaviour
         else
         {
 			StartCoroutine(RotateTower());
-			if (attackCounter <= 0) //hasTurned
+			if (attackCounter <= 0 && hasTurned) //hasTurned
 			{
 				isAttacking = true;
 				attackCounter = timeBetweenAttacks;
@@ -48,6 +48,7 @@ public class TowerControl : MonoBehaviour
             else
             {
                 isAttacking = false;
+				hasTurned = false;
 			}
             if (Vector2.Distance(transform.localPosition, targetEnemy.transform.localPosition) > attackRadius)
             {
@@ -72,15 +73,17 @@ public class TowerControl : MonoBehaviour
 			var targetAngle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
 			transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, 0, targetAngle),
 				rotationSpeed * Time.deltaTime);
-			if (Mathf.Abs(targetAngle) < 1.5f)
+			if (Quaternion.Angle(transform.rotation, Quaternion.Euler(0, 0, targetAngle)) < 3f)
+			{
 				hasTurned = true;
+			}
+				
 			yield return null;
 		}
 	}
 	public void Attack()
     {
         isAttacking = false;
-		hasTurned = false;
 		if (GetNearestEnemy() != null)
 		{
 			Projectile newProjectTile = Instantiate(projectile) as Projectile;
