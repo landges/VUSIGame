@@ -2,23 +2,42 @@
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TowerManager : Loader<TowerManager>
 {
     public TowerButton towerBtnPressed{get; set;}
     SpriteRenderer spriteRenderer;
+    bool panelIsOpen;
+    [SerializeField]
+    GameObject towerPanel;
+    [SerializeField]
+    GameObject towerInfo;
+    [SerializeField]
+    GameObject choiceTower;
 
+    [SerializeField]
+    Text damageLabel;
+    [SerializeField]
+    Text radiusLabel;
+    [SerializeField]
+    Image towerImage;
+    [SerializeField]
+    public Button backBtn;
     private List<TowerControl> TowerList = new List<TowerControl>();
     private List<Collider2D> BuildList = new List<Collider2D>();
     private Collider2D buildTile;
+    private RaycastHit2D hitTile;
+    private TowerControl selectTower;
+
     // Start is called before the first frame update
     void Start()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        panelIsOpen=false;
+        towerPanel.SetActive(false);
+        backBtn.gameObject.SetActive(false);
         buildTile = GetComponent<Collider2D>();
-        spriteRenderer.enabled = false;
     }
-
     // Update is called once per frame
     void Update()
     {
@@ -26,28 +45,92 @@ public class TowerManager : Loader<TowerManager>
         {
 			Vector2 mousePoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 			RaycastHit2D hit = Physics2D.Raycast(mousePoint, Vector2.zero);
-            if (hit.collider && hit.collider.tag == "TowerSide")
+            if (hit.collider && (hit.collider.tag == "TowerSide"  || hit.collider.tag == "TowerFull"))
             {
+                towerPanel.SetActive(true);
+                backBtn.gameObject.SetActive(true);
                 buildTile = hit.collider;
-                buildTile.tag = "TowerFull";
-                RegisterBuildSite(buildTile);
-                PlaceTower(hit);
+                hitTile = hit;
+                if(hit.collider.tag == "TowerSide")
+                {
+                    if(selectTower != null){
+                        selectTower.DisableRange();
+                    }
+                    towerInfo.SetActive(false);
+                    choiceTower.SetActive(true);
+                }
+                else if(hit.collider.tag == "TowerFull")
+                {
+                    choiceTower.SetActive(false);
+                    towerInfo.SetActive(true);
+                    foreach(TowerControl tower in TowerList)
+                    {
+                        if(tower.transform.position == hit.transform.position){
+                            if (selectTower != null)
+                            {
+                                selectTower.DisableRange();
+                            }
+                            selectTower=tower;
+                            break;
+                        }
+                    }
+                    if(selectTower!=null){
+                        ViewTowerInfo();
+                    }
+                }
             }
-			else
-			{
-				//fix bug
-				DisableDrag();
-				towerBtnPressed = null;
-			}
+            
 		}
-        if (spriteRenderer.enabled)
+    }
+    public void ViewTowerInfo()
+    {
+        radiusLabel.text="Radius: "+selectTower.attackRadius.ToString();
+        damageLabel.text="Damage: "+selectTower.projectile.AttackDamage;
+        SpriteRenderer m_SpriteRenderer = selectTower.GetComponent<SpriteRenderer>();
+        Sprite sprite=m_SpriteRenderer.sprite;
+        towerImage.sprite=sprite;
+        selectTower.EnableRange();
+    }
+    public void ClocePanel()
+    {
+        if (selectTower != null)
         {
-            FollowMouse();
+            selectTower.DisableRange();
         }
+        towerPanel.SetActive(false);
+        backBtn.gameObject.SetActive(false);
+        //backBtn.SetActive(false);
+        //DestrTower();
+    }
+
+    public void DestrTower()
+    {
+        Manager.Instance.TotalMoney += selectTower.sellPrice / 2;
+        TowerList.Remove(this.selectTower);
+        Collider2D selectBuild = null;
+        foreach (Collider2D buildTag in BuildList)
+        {
+            if (buildTag.transform.position == selectTower.transform.position)
+            {
+                selectBuild = buildTag;
+                buildTag.tag = "TowerSide";
+                break;
+            }
+        }
+        BuildList.Remove(selectBuild);
+        Destroy(selectTower.gameObject);
+        selectTower = null;
+        towerInfo.SetActive(false);
+        choiceTower.SetActive(true);
     }
     public void RegisterBuildSite(Collider2D buildTag)
     {
         BuildList.Add(buildTag);
+    }
+    // покупка башни: вычет денег из общего счета игрока
+    public void BuyTower(int price)
+    {
+        Manager.Instance.SubtractMoney(price);
     }
     public void RegisterTower(TowerControl tower)
     {
@@ -71,41 +154,35 @@ public class TowerManager : Loader<TowerManager>
     }
     public void PlaceTower(RaycastHit2D hit)
     {
-        if (!EventSystem.current.IsPointerOverGameObject() && towerBtnPressed !=null)
+        if (towerBtnPressed !=null)
         {
             TowerControl newTower = Instantiate(towerBtnPressed.TowerObject);
+            newTower.sellPrice = towerBtnPressed.TowerPrice;
             newTower.transform.position = hit.transform.position;
             BuyTower(towerBtnPressed.TowerPrice);
             Manager.Instance.AudioSrc.PlayOneShot(SoundManager.Instance.TowerBuilt);
             RegisterTower(newTower);
-            DisableDrag();
+            if(selectTower != null){
+                selectTower.DisableRange();
+            }
+            selectTower=newTower;
+            choiceTower.SetActive(false);
+            towerInfo.SetActive(true);
         }
-    }
-    public void BuyTower(int price)
-    {
-        Manager.Instance.SubtractMoney(price);
     }
     public void SelectTower(TowerButton towerSelected)
     {
         if (towerSelected.TowerPrice <= Manager.Instance.TotalMoney)
         {
             towerBtnPressed = towerSelected;
-            EnableDrag(towerBtnPressed.DragSprite);
+            // EnableDrag(towerBtnPressed.DragSprite);
+            buildTile.tag = "TowerFull";  
+            RegisterBuildSite(buildTile);
+            PlaceTower(hitTile);
+            ViewTowerInfo();
         }
         
-    }
-    public void FollowMouse()
-    {
-        transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        transform.position = new Vector2(transform.position.x, transform.position.y);
-    }
-    public void EnableDrag(Sprite sprite)
-    {
-        spriteRenderer.enabled = true;
-        spriteRenderer.sprite = sprite;
-    }
-    public void DisableDrag()
-    {
-        spriteRenderer.enabled = false;
+        
+        
     }
 }

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5950080435779933296}
   - component: {fileID: 5950080435779933299}
-  - component: {fileID: 3456141337585134783}
+  - component: {fileID: 5868390522245868599}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ce7beff33d46c445aa1f2d135638c36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  totalWaves: 3
+  totalWaves: 10
   totalMoneyLabel: {fileID: 0}
   currentWave: {fileID: 0}
   healthLabel: {fileID: 0}
@@ -57,7 +57,7 @@ MonoBehaviour:
   totalEnemies: 5
   enemiesPerSpawn: 1
   EnemyList: []
---- !u!82 &3456141337585134783
+--- !u!82 &5868390522245868599
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

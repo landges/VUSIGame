@@ -8,21 +8,23 @@ public class TowerControl : MonoBehaviour
     float timeBetweenAttacks;
 	//degrees per second
 	[SerializeField]
-	float rotationSpeed;
+	public float rotationSpeed;
 	[SerializeField]
-    float attackRadius;
+    public float attackRadius;
     [SerializeField]
-    Projectile projectile;
+    public Projectile projectile;
+    [SerializeField]
+    public int sellPrice { get; set; }
     Enemy targetEnemy = null;
     float attackCounter;
 	bool hasTurned = false;
     bool isAttacking = false;
+    private SpriteRenderer rangeSpriteRenderer;
     // Start is called before the first frame update
-    void Start()
-    {
-
+    void Init(){
+        rangeSpriteRenderer=this.transform.GetChild(0).GetComponent<SpriteRenderer>();
+        rangeSpriteRenderer.transform.localScale=new Vector3(this.attackRadius*2f,this.attackRadius*2f,1);
     }
-
     // Update is called once per frame
     void Update()
     {
@@ -78,6 +80,7 @@ public class TowerControl : MonoBehaviour
 	public void Attack()
     {
         isAttacking = false;
+		hasTurned = false;
 		if (GetNearestEnemy() != null)
 		{
 			Projectile newProjectTile = Instantiate(projectile) as Projectile;
@@ -193,5 +196,14 @@ public class TowerControl : MonoBehaviour
             }
         }
         return nearestEnemy;
+    }
+    public void EnableRange(){
+        if(rangeSpriteRenderer == null){
+            Init();
+        }
+        rangeSpriteRenderer.enabled=true;
+    }
+    public void DisableRange(){
+        rangeSpriteRenderer.enabled=false;
     }
 }
