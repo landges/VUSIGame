@@ -15,6 +15,8 @@ public class TowerManager : Loader<TowerManager>
     GameObject towerInfo;
     [SerializeField]
     GameObject choiceTower;
+    [SerializeField]
+    GameObject textChoiceTower;
 
     [SerializeField]
     Text damageLabel;
@@ -58,10 +60,12 @@ public class TowerManager : Loader<TowerManager>
                     }
                     towerInfo.SetActive(false);
                     choiceTower.SetActive(true);
+                    textChoiceTower.SetActive(true);
                 }
                 else if(hit.collider.tag == "TowerFull")
                 {
                     choiceTower.SetActive(false);
+                    textChoiceTower.SetActive(false);
                     towerInfo.SetActive(true);
                     foreach(TowerControl tower in TowerList)
                     {
@@ -122,6 +126,7 @@ public class TowerManager : Loader<TowerManager>
         selectTower = null;
         towerInfo.SetActive(false);
         choiceTower.SetActive(true);
+        textChoiceTower.SetActive(true);
     }
     public void RegisterBuildSite(Collider2D buildTag)
     {
@@ -167,6 +172,7 @@ public class TowerManager : Loader<TowerManager>
             }
             selectTower=newTower;
             choiceTower.SetActive(false);
+            textChoiceTower.SetActive(false);
             towerInfo.SetActive(true);
         }
     }

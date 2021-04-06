@@ -10838,6 +10838,12 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &353996804 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 353996804, guid: cf5b1d52f70fc774a9bf51139e0b12fe,
+    type: 3}
+  m_PrefabInstance: {fileID: 8321959824665807994}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &365288819
 GameObject:
   m_ObjectHideFlags: 0
@@ -60788,6 +60794,11 @@ PrefabInstance:
       propertyPath: radiusLabel
       value: 
       objectReference: {fileID: 1288290150}
+    - target: {fileID: 6155656770874055903, guid: c08c716763fb4af4f96330fc69b3c4c8,
+        type: 3}
+      propertyPath: textChoiceTower
+      value: 
+      objectReference: {fileID: 353996804}
     - target: {fileID: 6155656771683539269, guid: c08c716763fb4af4f96330fc69b3c4c8,
         type: 3}
       propertyPath: m_RootOrder
