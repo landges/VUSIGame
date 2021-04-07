@@ -29330,6 +29330,21 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3722877988652194638, guid: f74db345ee2e296409e36623323563a1,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3722877988652194638, guid: f74db345ee2e296409e36623323563a1,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3722877988652194638, guid: f74db345ee2e296409e36623323563a1,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3722877988652194639, guid: f74db345ee2e296409e36623323563a1,
         type: 3}
       propertyPath: m_RootOrder

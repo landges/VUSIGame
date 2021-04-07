@@ -59,7 +59,7 @@ public class TowerManager : Loader<TowerManager>
                 {
                     buildTileOld.GetComponent<SpriteRenderer>().color = Color.white;
                 }
-                buildTile.gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+                buildTile.gameObject.GetComponent<SpriteRenderer>().color = new Color(0.9843137f, 0.4823529f, 1, 1); ;
                 buildTileOld = buildTile;
                 hitTile = hit;
                 if(hit.collider.tag == "TowerSide")
