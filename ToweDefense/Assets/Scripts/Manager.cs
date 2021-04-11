@@ -44,13 +44,10 @@ public class Manager : Loader<Manager>
 	public int TotalKilled { get; set; } = 0;
 	const float spawnDelay = 0.5f;
 
-<<<<<<< Updated upstream
-=======
     private bool gameOver = false;
     [SerializeField]
     private GameObject gameOverMenu;
 
->>>>>>> Stashed changes
     public int TotalMoney
     {
         get
@@ -68,6 +65,8 @@ public class Manager : Loader<Manager>
 	void Start()
     {
 		Health = TotalHealth;
+        totalMoneyLabel.text=TotalMoney.ToString();
+        healthLabel.text=TotalHealth.ToString();
         playBtn.gameObject.SetActive(false);
 		AudioSrc = GetComponent<AudioSource>();
         ShowMenu();
@@ -137,6 +136,7 @@ public class Manager : Loader<Manager>
         if (Health <= 0)
         {
             this.Health = 0;
+            playBtn.interactable=false;
             GameOver();
             //currentState = gameStatus.gameover;
         }
@@ -185,6 +185,7 @@ public class Manager : Loader<Manager>
         switch (currentState)
         {
             case gameStatus.gameover:
+                playBtn.interactable=false;
                 playBtnLabel.text = "Play Again?";
                 AudioSrc.PlayOneShot(SoundManager.Instance.Gameover);
                 break;
