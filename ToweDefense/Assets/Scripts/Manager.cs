@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public enum gameStatus
 {
@@ -42,6 +43,14 @@ public class Manager : Loader<Manager>
 	public int Health { get; set; }
 	public int TotalKilled { get; set; } = 0;
 	const float spawnDelay = 0.5f;
+
+<<<<<<< Updated upstream
+=======
+    private bool gameOver = false;
+    [SerializeField]
+    private GameObject gameOverMenu;
+
+>>>>>>> Stashed changes
     public int TotalMoney
     {
         get
@@ -127,7 +136,9 @@ public class Manager : Loader<Manager>
     {
         if (Health <= 0)
         {
-            currentState = gameStatus.gameover;
+            this.Health = 0;
+            GameOver();
+            //currentState = gameStatus.gameover;
         }
         else if(waveNumber==0 && (TotalHealth-Health + TotalKilled) == 0)
         {
@@ -200,5 +211,24 @@ public class Manager : Loader<Manager>
             // TowerManager.Instance.DisableDrag();
             TowerManager.Instance.towerBtnPressed = null;
         }
+    }
+
+    public void GameOver()
+    {
+        if (!gameOver)
+        {
+            gameOver = true;
+            gameOverMenu.SetActive(true);
+        }
+    }
+
+    public void Restart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+    
+    public void Quit(int _sceneNumber)
+    {
+        SceneManager.LoadScene(_sceneNumber);
     }
 }
