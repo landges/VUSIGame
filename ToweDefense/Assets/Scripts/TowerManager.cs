@@ -29,9 +29,10 @@ public class TowerManager : Loader<TowerManager>
     private List<TowerControl> TowerList = new List<TowerControl>();
     private List<Collider2D> BuildList = new List<Collider2D>();
     private Collider2D buildTile;
+    private Collider2D buildTileOld = null;
     private RaycastHit2D hitTile;
     private TowerControl selectTower;
-
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -45,16 +46,25 @@ public class TowerManager : Loader<TowerManager>
     {
         if (Input.GetMouseButtonDown(0))
         {
+            
 			Vector2 mousePoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 			RaycastHit2D hit = Physics2D.Raycast(mousePoint, Vector2.zero);
             if (hit.collider && (hit.collider.tag == "TowerSide"  || hit.collider.tag == "TowerFull"))
             {
+                //buildTile.gameObject.GetComponent<SpriteRenderer>().color = Color.red;
                 towerPanel.SetActive(true);
                 backBtn.gameObject.SetActive(true);
                 buildTile = hit.collider;
+                if (buildTileOld != null && buildTile != buildTileOld)
+                {
+                    buildTileOld.GetComponent<SpriteRenderer>().color = Color.white;
+                }
+                buildTile.gameObject.GetComponent<SpriteRenderer>().color = new Color(0.9843137f, 0.4823529f, 1, 1); ;
+                buildTileOld = buildTile;
                 hitTile = hit;
                 if(hit.collider.tag == "TowerSide")
                 {
+
                     if(selectTower != null){
                         selectTower.DisableRange();
                     }
@@ -103,6 +113,10 @@ public class TowerManager : Loader<TowerManager>
         }
         towerPanel.SetActive(false);
         backBtn.gameObject.SetActive(false);
+        if (buildTileOld != null)
+        {
+            buildTileOld.GetComponent<SpriteRenderer>().color = Color.white;
+        }
         //backBtn.SetActive(false);
         //DestrTower();
     }
