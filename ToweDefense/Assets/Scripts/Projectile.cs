@@ -18,6 +18,10 @@ public class Projectile : MonoBehaviour
         {
             return attackDamage;
         }
+        set
+        {
+            attackDamage=value;
+        }
     }
     public projecttileType PType
     {

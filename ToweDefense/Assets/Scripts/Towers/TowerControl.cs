@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class TowerControl : MonoBehaviour
 {
+	public int Level{get;set;}
     [SerializeField]
     float timeBetweenAttacks;
 	//degrees per second
@@ -15,11 +16,36 @@ public class TowerControl : MonoBehaviour
     public Projectile projectile;
     [SerializeField]
     public int sellPrice { get; set; }
+
+	public UpgradeTower[] Upgrades{get; protected set;}
+
+	public UpgradeTower NextUpgrade
+	{
+		get
+		{
+			if(Upgrades.Length > Level-1)
+			{
+				return Upgrades[Level-1];
+			}
+			return null;
+		}
+	}
     Enemy targetEnemy = null;
     float attackCounter;
 	bool hasTurned = false;
     bool isAttacking = false;
     private SpriteRenderer rangeSpriteRenderer;
+
+	void Start()
+	{
+		Level=1;
+		Upgrades=new UpgradeTower[]
+		{
+			new UpgradeTower(20,1,.5f,0.1f),
+			new UpgradeTower(30,1,.5f,0.1f),
+			new UpgradeTower(40,1,.5f,0.1f),
+		};
+	}
     // Start is called before the first frame update
     void Init(){
         rangeSpriteRenderer=this.transform.GetChild(0).GetComponent<SpriteRenderer>();
@@ -209,4 +235,14 @@ public class TowerControl : MonoBehaviour
     public void DisableRange(){
         rangeSpriteRenderer.enabled=false;
     }
+
+	public virtual void Upgrade()
+	{
+		Manager.Instance.TotalMoney-=NextUpgrade.Price;
+		sellPrice+=NextUpgrade.Price/2;
+		projectile.AttackDamage+=NextUpgrade.Damage;
+		attackRadius+=NextUpgrade.AttackRadius;
+		rotationSpeed+=NextUpgrade.RotationSpeed;
+		Init();
+	}
 }

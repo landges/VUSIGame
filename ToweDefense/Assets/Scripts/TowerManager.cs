@@ -120,7 +120,20 @@ public class TowerManager : Loader<TowerManager>
         //backBtn.SetActive(false);
         //DestrTower();
     }
-
+    public void TowerUpgrade()
+    {
+        Debug.Log(selectTower);
+        if(selectTower != null)
+        {
+            Debug.Log("pososi1");
+            if(selectTower.Level <= selectTower.Upgrades.Length && Manager.Instance.TotalMoney >= selectTower.NextUpgrade.Price)
+            {
+                Debug.Log("pososi2");
+                selectTower.Upgrade();
+                ViewTowerInfo();
+            }
+        }
+    }
     public void DestrTower()
     {
         Manager.Instance.TotalMoney += selectTower.sellPrice / 2;
@@ -201,8 +214,6 @@ public class TowerManager : Loader<TowerManager>
             PlaceTower(hitTile);
             ViewTowerInfo();
         }
-        
-        
-        
     }
+    
 }

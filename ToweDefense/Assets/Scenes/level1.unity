@@ -60220,7 +60220,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_TargetDisplay: 0
 --- !u!224 &2118713597
 RectTransform:
@@ -61563,6 +61563,14 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 945945607}
+    - target: {fileID: 79184076, guid: cf5b1d52f70fc774a9bf51139e0b12fe, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 79184077, guid: cf5b1d52f70fc774a9bf51139e0b12fe, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 945945607}
     - target: {fileID: 8321959823068558458, guid: cf5b1d52f70fc774a9bf51139e0b12fe,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -61683,6 +61691,11 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 945945607}
+    - target: {fileID: 8579295192449613899, guid: cf5b1d52f70fc774a9bf51139e0b12fe,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cf5b1d52f70fc774a9bf51139e0b12fe, type: 3}
 --- !u!1001 &8324664102561549217
