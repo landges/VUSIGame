@@ -122,13 +122,10 @@ public class TowerManager : Loader<TowerManager>
     }
     public void TowerUpgrade()
     {
-        Debug.Log(selectTower);
         if(selectTower != null)
         {
-            Debug.Log("pososi1");
             if(selectTower.Level <= selectTower.Upgrades.Length && Manager.Instance.TotalMoney >= selectTower.NextUpgrade.Price)
             {
-                Debug.Log("pososi2");
                 selectTower.Upgrade();
                 ViewTowerInfo();
             }

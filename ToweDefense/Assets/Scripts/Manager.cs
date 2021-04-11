@@ -43,8 +43,6 @@ public class Manager : Loader<Manager>
 	public int Health { get; set; }
 	public int TotalKilled { get; set; } = 0;
 	const float spawnDelay = 0.5f;
-
-    private bool gameOver = false;
     [SerializeField]
     private GameObject gameOverMenu;
 
@@ -137,8 +135,8 @@ public class Manager : Loader<Manager>
         {
             this.Health = 0;
             playBtn.interactable=false;
+            currentState = gameStatus.gameover;
             GameOver();
-            //currentState = gameStatus.gameover;
         }
         else if(waveNumber==0 && (TotalHealth-Health + TotalKilled) == 0)
         {
@@ -216,9 +214,8 @@ public class Manager : Loader<Manager>
 
     public void GameOver()
     {
-        if (!gameOver)
+        if (currentState == gameStatus.gameover)
         {
-            gameOver = true;
             gameOverMenu.SetActive(true);
         }
     }
