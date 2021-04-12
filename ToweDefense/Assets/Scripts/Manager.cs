@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public enum gameStatus
 {
@@ -42,6 +43,9 @@ public class Manager : Loader<Manager>
 	public int Health { get; set; }
 	public int TotalKilled { get; set; } = 0;
 	const float spawnDelay = 0.5f;
+    [SerializeField]
+    private GameObject gameOverMenu;
+
     public int TotalMoney
     {
         get
@@ -59,6 +63,8 @@ public class Manager : Loader<Manager>
 	void Start()
     {
 		Health = TotalHealth;
+        totalMoneyLabel.text=TotalMoney.ToString();
+        healthLabel.text=TotalHealth.ToString();
         playBtn.gameObject.SetActive(false);
 		AudioSrc = GetComponent<AudioSource>();
         ShowMenu();
@@ -127,7 +133,10 @@ public class Manager : Loader<Manager>
     {
         if (Health <= 0)
         {
+            this.Health = 0;
+            playBtn.interactable=false;
             currentState = gameStatus.gameover;
+            GameOver();
         }
         else if(waveNumber==0 && (TotalHealth-Health + TotalKilled) == 0)
         {
@@ -174,6 +183,7 @@ public class Manager : Loader<Manager>
         switch (currentState)
         {
             case gameStatus.gameover:
+                playBtn.interactable=false;
                 playBtnLabel.text = "Play Again?";
                 AudioSrc.PlayOneShot(SoundManager.Instance.Gameover);
                 break;
@@ -200,5 +210,23 @@ public class Manager : Loader<Manager>
             // TowerManager.Instance.DisableDrag();
             TowerManager.Instance.towerBtnPressed = null;
         }
+    }
+
+    public void GameOver()
+    {
+        if (currentState == gameStatus.gameover)
+        {
+            gameOverMenu.SetActive(true);
+        }
+    }
+
+    public void Restart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+    
+    public void Quit(int _sceneNumber)
+    {
+        SceneManager.LoadScene(_sceneNumber);
     }
 }
