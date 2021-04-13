@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class TowerControl : MonoBehaviour
 {
-	public int Level{get;set;}
+	public int Level{get;set;}=1;
+	[SerializeField]
+	public int Damage;
     [SerializeField]
-    float timeBetweenAttacks;
+    public float timeBetweenAttacks;
 	//degrees per second
 	[SerializeField]
 	public float rotationSpeed;
@@ -36,9 +38,8 @@ public class TowerControl : MonoBehaviour
     bool isAttacking = false;
     private SpriteRenderer rangeSpriteRenderer;
 
-	void Start()
+	public void Start()
 	{
-		Level=1;
 		Upgrades=new UpgradeTower[]
 		{
 			new UpgradeTower(20,1,.5f,0.1f),
@@ -113,6 +114,7 @@ public class TowerControl : MonoBehaviour
 		if (GetNearestEnemy() != null)
 		{
 			Projectile newProjectTile = Instantiate(projectile) as Projectile;
+			newProjectTile.AttackDamage=Damage;
 			newProjectTile.transform.localPosition = transform.localPosition;
 			if (newProjectTile.PType == projecttileType.arrow)
 			{
@@ -240,9 +242,10 @@ public class TowerControl : MonoBehaviour
 	{
 		Manager.Instance.TotalMoney-=NextUpgrade.Price;
 		sellPrice+=NextUpgrade.Price/2;
-		projectile.AttackDamage+=NextUpgrade.Damage;
+		Damage+=NextUpgrade.Damage;
 		attackRadius+=NextUpgrade.AttackRadius;
 		rotationSpeed+=NextUpgrade.RotationSpeed;
 		Init();
+		Level+=1;
 	}
 }

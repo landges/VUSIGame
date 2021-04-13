@@ -15,17 +15,26 @@ public class TowerManager : Loader<TowerManager>
     GameObject towerInfo;
     [SerializeField]
     GameObject choiceTower;
-    [SerializeField]
-    GameObject textChoiceTower;
 
+    [SerializeField]
+    Text levelLabel;
     [SerializeField]
     Text damageLabel;
     [SerializeField]
     Text radiusLabel;
     [SerializeField]
+    Text rotationLabel;
+    [SerializeField]
+    Text attackSpeedLabel;
+    [SerializeField]
+    Text upgradePriceLabel;
+    [SerializeField]
+    Text sellPriceLabel;
+    [SerializeField]
     Image towerImage;
     [SerializeField]
     public Button backBtn;
+
     private List<TowerControl> TowerList = new List<TowerControl>();
     private List<Collider2D> BuildList = new List<Collider2D>();
     private Collider2D buildTile;
@@ -70,12 +79,10 @@ public class TowerManager : Loader<TowerManager>
                     }
                     towerInfo.SetActive(false);
                     choiceTower.SetActive(true);
-                    textChoiceTower.SetActive(true);
                 }
                 else if(hit.collider.tag == "TowerFull")
                 {
                     choiceTower.SetActive(false);
-                    textChoiceTower.SetActive(false);
                     towerInfo.SetActive(true);
                     foreach(TowerControl tower in TowerList)
                     {
@@ -98,8 +105,13 @@ public class TowerManager : Loader<TowerManager>
     }
     public void ViewTowerInfo()
     {
+        levelLabel.text="Label: "+ selectTower.Level;
         radiusLabel.text="Radius: "+selectTower.attackRadius.ToString();
-        damageLabel.text="Damage: "+selectTower.projectile.AttackDamage;
+        damageLabel.text="Damage: "+selectTower.Damage;
+        rotationLabel.text="Rotation Speed: "+selectTower.rotationSpeed;
+        attackSpeedLabel.text="Attack Speed: "+Mathf.Round(1/selectTower.timeBetweenAttacks).ToString();
+        upgradePriceLabel.text="for "+selectTower.NextUpgrade.Price;
+        sellPriceLabel.text=selectTower.sellPrice.ToString();
         SpriteRenderer m_SpriteRenderer = selectTower.GetComponent<SpriteRenderer>();
         Sprite sprite=m_SpriteRenderer.sprite;
         towerImage.sprite=sprite;
@@ -133,7 +145,7 @@ public class TowerManager : Loader<TowerManager>
     }
     public void DestrTower()
     {
-        Manager.Instance.TotalMoney += selectTower.sellPrice / 2;
+        Manager.Instance.TotalMoney += selectTower.sellPrice;
         TowerList.Remove(this.selectTower);
         Collider2D selectBuild = null;
         foreach (Collider2D buildTag in BuildList)
@@ -150,7 +162,6 @@ public class TowerManager : Loader<TowerManager>
         selectTower = null;
         towerInfo.SetActive(false);
         choiceTower.SetActive(true);
-        textChoiceTower.SetActive(true);
     }
     public void RegisterBuildSite(Collider2D buildTag)
     {
@@ -186,6 +197,7 @@ public class TowerManager : Loader<TowerManager>
         if (towerBtnPressed !=null)
         {
             TowerControl newTower = Instantiate(towerBtnPressed.TowerObject);
+            newTower.Start();
             newTower.sellPrice = towerBtnPressed.TowerPrice;
             newTower.transform.position = hit.transform.position;
             BuyTower(towerBtnPressed.TowerPrice);
@@ -196,7 +208,6 @@ public class TowerManager : Loader<TowerManager>
             }
             selectTower=newTower;
             choiceTower.SetActive(false);
-            textChoiceTower.SetActive(false);
             towerInfo.SetActive(true);
         }
     }
