@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class Enemy : MonoBehaviour
 {
@@ -19,7 +20,10 @@ public class Enemy : MonoBehaviour
 	Animator anim;
 	int target = 0;
 	float navigationTime = 0;
+	bool hasCome = false;
 
+	public float x_offset;
+	public float y_offset;
 	public bool IsDead { get; private set; } = false;
 	// Start is called before the first frame update
 	void Start()
@@ -42,11 +46,19 @@ public class Enemy : MonoBehaviour
 			{
 				if (target < wayPoints.Length)
 				{
-					enemy.position = Vector2.MoveTowards(enemy.position, wayPoints[target].transform.position, speed * navigationTime);
+					var newpos = wayPoints[target].transform.position;
+					var prevpos = enemy.position;
+					newpos.x += x_offset;
+					newpos.y += y_offset;
+					enemy.position = Vector2.MoveTowards(enemy.position, newpos, speed * navigationTime);
+					if (Vector3.Distance(enemy.position, prevpos) ==0f)
+					{
+						target += 1;
+					}
 				}
 				else
 				{
-					enemy.position = Vector2.MoveTowards(enemy.position, exit.transform.position, speed * navigationTime);
+					enemy.position = Vector2.MoveTowards(enemy.position, exit.GetComponent<CircleCollider2D>().ClosestPoint(enemy.position), speed * navigationTime);
 				}
 				navigationTime = 0;
 			}
@@ -66,10 +78,6 @@ public class Enemy : MonoBehaviour
 			Manager.Instance.Health -= 1;
 			Manager.Instance.UnregisterEnemy(this);
 			Manager.Instance.IsWaveOver();
-		}
-		else if (collision.tag == "MovingPoint")
-		{
-			target += 1;
 		}
 	}
 	public void EnemyHit(int hitpoints)
