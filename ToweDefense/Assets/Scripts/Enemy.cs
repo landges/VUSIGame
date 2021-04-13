@@ -34,7 +34,7 @@ public class Enemy : MonoBehaviour
 		enemy = GetComponent<Transform>();
 		enemyCollider = GetComponent<Collider2D>();
 		anim = GetComponent<Animator>();
-		Manager.Instance.RegisterEnemy(this);
+		//Manager.Instance.RegisterEnemy(this);
 	}
 
 	// Update is called once per frame

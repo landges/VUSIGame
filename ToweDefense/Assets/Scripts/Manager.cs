@@ -91,6 +91,7 @@ public class Manager : Loader<Manager>
 					newEnemy.y_offset = Random.Range(-size.y / 2, size.y/2);
 					Vector2 pos = new Vector3(center.x + newEnemy.x_offset, center.y + newEnemy.y_offset);
 					newEnemy.transform.position = pos;
+					RegisterEnemy(newEnemy);
                 }
             }
             yield return new WaitForSeconds(spawnDelay);
@@ -171,8 +172,6 @@ public class Manager : Loader<Manager>
                 Health = TotalHealth;
                 totalMoney = TotalMoney;
                 enemiesToSpawn = 0;
-                TowerManager.Instance.DestroyAllTowers();
-                TowerManager.Instance.RenameTagBuildSite();
 				totalMoneyLabel.text = TotalMoney.ToString();
                 healthLabel.text = TotalHealth.ToString();
 				AudioSrc.PlayOneShot(SoundManager.Instance.Newgame);				
