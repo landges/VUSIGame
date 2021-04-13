@@ -9,7 +9,7 @@ public class Enemy : MonoBehaviour
 	[SerializeField]
 	float navigation;
 	[SerializeField]
-	int health;
+	public int startingHealth;
 	[SerializeField]
 	int revertAmount;
 
@@ -22,6 +22,7 @@ public class Enemy : MonoBehaviour
 	float navigationTime = 0;
 	bool hasCome = false;
 
+	public int health;
 	public float x_offset;
 	public float y_offset;
 	public bool IsDead { get; private set; } = false;
