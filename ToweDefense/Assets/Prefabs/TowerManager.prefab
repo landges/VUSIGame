@@ -44,12 +44,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06565bad4018d874cbb50ba84f502376, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  towerPanel: {fileID: 8321959823616691762, guid: cf5b1d52f70fc774a9bf51139e0b12fe,
-    type: 3}
+  towerPanel: {fileID: 0}
   towerInfo: {fileID: 0}
   choiceTower: {fileID: 0}
+  levelLabel: {fileID: 0}
   damageLabel: {fileID: 0}
   radiusLabel: {fileID: 0}
+  rotationLabel: {fileID: 0}
+  attackSpeedLabel: {fileID: 0}
+  upgradePriceLabel: {fileID: 0}
+  sellPriceLabel: {fileID: 0}
   towerImage: {fileID: 0}
   backBtn: {fileID: 0}
 --- !u!212 &1210103289393359176
