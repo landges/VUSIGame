@@ -15196,7 +15196,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxZoom: 7.2027
   minZoom: 2
-  sensitivity: 2
+  sensitivity: 1
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -15206,8 +15206,8 @@ Camera:
   m_GameObject: {fileID: 519420028}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 3
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 1
+  m_BackGroundColor: {r: 0.07058824, g: 0.18431373, b: 0.28627452, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
