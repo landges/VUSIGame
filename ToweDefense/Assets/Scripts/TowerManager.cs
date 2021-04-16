@@ -33,7 +33,7 @@ public class TowerManager : Loader<TowerManager>
     [SerializeField]
     Image towerImage;
     [SerializeField]
-    public Button backBtn;
+    public Button upgradeBtn;
 
     private List<TowerControl> TowerList = new List<TowerControl>();
     private List<Collider2D> BuildList = new List<Collider2D>();
@@ -47,7 +47,6 @@ public class TowerManager : Loader<TowerManager>
     {
         panelIsOpen=false;
         towerPanel.SetActive(false);
-        backBtn.gameObject.SetActive(false);
         buildTile = GetComponent<Collider2D>();
     }
     // Update is called once per frame
@@ -62,7 +61,6 @@ public class TowerManager : Loader<TowerManager>
             {
                 //buildTile.gameObject.GetComponent<SpriteRenderer>().color = Color.red;
                 towerPanel.SetActive(true);
-                backBtn.gameObject.SetActive(true);
                 buildTile = hit.collider;
                 if (buildTileOld != null && buildTile != buildTileOld)
                 {
@@ -110,7 +108,17 @@ public class TowerManager : Loader<TowerManager>
         damageLabel.text="Damage: "+selectTower.Damage;
         rotationLabel.text="Rotation Speed: "+selectTower.rotationSpeed;
         attackSpeedLabel.text="Attack Speed: "+Mathf.Round(1/selectTower.timeBetweenAttacks).ToString();
-        upgradePriceLabel.text="for "+selectTower.NextUpgrade.Price;
+        if (selectTower.NextUpgrade ==null)
+        {
+            upgradeBtn.interactable=false;
+            upgradePriceLabel.text="Max lvl!";
+            // upgradeBtn.GetChild(1).SetActive(false);
+        }
+        else
+        {
+            upgradeBtn.interactable=true;
+            upgradePriceLabel.text="for "+selectTower.NextUpgrade.Price; 
+        }
         sellPriceLabel.text=selectTower.sellPrice.ToString();
         SpriteRenderer m_SpriteRenderer = selectTower.GetComponent<SpriteRenderer>();
         Sprite sprite=m_SpriteRenderer.sprite;
@@ -124,7 +132,6 @@ public class TowerManager : Loader<TowerManager>
             selectTower.DisableRange();
         }
         towerPanel.SetActive(false);
-        backBtn.gameObject.SetActive(false);
         if (buildTileOld != null)
         {
             buildTileOld.GetComponent<SpriteRenderer>().color = Color.white;
@@ -139,8 +146,8 @@ public class TowerManager : Loader<TowerManager>
             if(selectTower.Level <= selectTower.Upgrades.Length && Manager.Instance.TotalMoney >= selectTower.NextUpgrade.Price)
             {
                 selectTower.Upgrade();
-                ViewTowerInfo();
             }
+            ViewTowerInfo();
         }
     }
     public void DestrTower()
