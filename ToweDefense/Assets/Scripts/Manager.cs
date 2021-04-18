@@ -38,7 +38,7 @@ public class Manager : Loader<Manager>
     int enemiesToSpawn = 0;
     gameStatus currentState = gameStatus.play;
 	public List<Enemy> EnemyList = new List<Enemy>();
-
+	public List<GameObject> wayPoints;
 	public int TotalHealth { get; } = 20;
 	public int Health { get; set; }
 	public int TotalKilled { get; set; } = 0;
@@ -62,6 +62,9 @@ public class Manager : Loader<Manager>
 	// Start is called before the first frame update
 	void Start()
     {
+		//IComparer<GameObject> wpc = new IComparer<GameObject>() { };
+		wayPoints = new List<GameObject>(GameObject.FindGameObjectsWithTag("MovingPoint"));
+		wayPoints.Sort(SortByName);
 		Health = TotalHealth;
         totalMoneyLabel.text=TotalMoney.ToString();
         healthLabel.text=TotalHealth.ToString();
@@ -74,7 +77,12 @@ public class Manager : Loader<Manager>
         HandleEscape();
     }
 
-    IEnumerator Spawn()
+	private static int SortByName(GameObject o1, GameObject o2)
+	{
+		return o1.name.CompareTo(o2.name);
+	}
+
+	IEnumerator Spawn()
     {
         if (enemiesPerSpawn > 0 && EnemyList.Count < totalEnemies)
         {
