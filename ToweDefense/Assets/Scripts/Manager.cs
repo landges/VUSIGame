@@ -22,6 +22,8 @@ public class Manager : Loader<Manager>
 	[SerializeField]
     Text playBtnLabel;
     [SerializeField]
+    Text ScoreLabel;
+    [SerializeField]
     Button playBtn;
     [SerializeField]
     GameObject spawnPoint;
@@ -43,8 +45,12 @@ public class Manager : Loader<Manager>
 	public int Health { get; set; }
 	public int TotalKilled { get; set; } = 0;
 	const float spawnDelay = 0.5f;
+    public int Score { get; set; } = 0;
+
     [SerializeField]
     private GameObject gameOverMenu;
+    [SerializeField]
+    private GameObject WinMenu;
 
     public int TotalMoney
     {
@@ -161,6 +167,8 @@ public class Manager : Loader<Manager>
         else if (waveNumber >= totalWaves)
         {
             currentState = gameStatus.win;
+            playBtn.interactable=false;
+            WinGame();
         }
         else
         {
@@ -225,7 +233,17 @@ public class Manager : Loader<Manager>
             TowerManager.Instance.towerBtnPressed = null;
         }
     }
+    public void WinGame()
+    {
+        if(currentState == gameStatus.win)
+        {
+            WinMenu.SetActive(true);
+            // Временная заглушка для подсчета итоговых очков
+            Score+=TotalKilled;
 
+            ScoreLabel.text="Score: "+ Score.ToString();
+        }
+    }
     public void GameOver()
     {
         if (currentState == gameStatus.gameover)
