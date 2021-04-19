@@ -49,14 +49,19 @@ MonoBehaviour:
   currentWave: {fileID: 0}
   healthLabel: {fileID: 0}
   playBtnLabel: {fileID: 0}
+  ScoreLabel: {fileID: 0}
   playBtn: {fileID: 0}
   spawnPoint: {fileID: 4005834846069309656, guid: 1238465448e0127419f561df1b2a253a,
     type: 3}
   enemies:
   - {fileID: 6033122568952800708, guid: c1358b9a86b24374fb62535cf9528f84, type: 3}
+  - {fileID: 1287019758764505948, guid: 0b482e82ecb2ece4fb830fad5742725f, type: 3}
   totalEnemies: 5
-  enemiesPerSpawn: 1
+  enemiesPerSpawn: 3
   EnemyList: []
+  wayPoints: []
+  gameOverMenu: {fileID: 0}
+  WinMenu: {fileID: 0}
 --- !u!82 &5868390522245868599
 AudioSource:
   m_ObjectHideFlags: 0

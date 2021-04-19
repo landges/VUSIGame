@@ -55,7 +55,7 @@ MonoBehaviour:
   upgradePriceLabel: {fileID: 0}
   sellPriceLabel: {fileID: 0}
   towerImage: {fileID: 0}
-  backBtn: {fileID: 0}
+  upgradeBtn: {fileID: 0}
 --- !u!212 &1210103289393359176
 SpriteRenderer:
   m_ObjectHideFlags: 0

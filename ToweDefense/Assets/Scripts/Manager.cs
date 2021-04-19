@@ -99,6 +99,7 @@ public class Manager : Loader<Manager>
 					var center = spawnPoint.transform.position;
 					var size  = spawnPoint.GetComponent<BoxCollider2D>().size;
 					Enemy newEnemy = Instantiate(enemies[Random.Range(0,enemiesToSpawn)]) as Enemy;
+                    // Enemy newEnemy = Instantiate(enemies[1]) as Enemy;
 					//need balancing
 					newEnemy.health = (int)(newEnemy.startingHealth * (1 + (float)waveNumber/10));
 					newEnemy.x_offset = Random.Range(-size.x/2, size.x/2);
