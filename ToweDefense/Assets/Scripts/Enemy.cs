@@ -111,6 +111,7 @@ public class Enemy : MonoBehaviour
 		IsDead = true;
 		enemyCollider.enabled = false;
 		Manager.Instance.TotalKilled += 1;
+		Manager.Instance.Score += 1;
 		Manager.Instance.AudioSrc.PlayOneShot(SoundManager.Instance.Death);
 		Manager.Instance.AddMoney(revertAmount);
 		Manager.Instance.EnemyList.Remove(this);
