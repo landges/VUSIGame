@@ -165,7 +165,7 @@ public class Manager : Loader<Manager>
         {
             currentState = gameStatus.play;
         }
-        else if (waveNumber >= totalWaves)
+        else if (waveNumber >= totalWaves && EnemyList.Count == 0)
         {
             currentState = gameStatus.win;
             playBtn.interactable=false;
@@ -240,7 +240,7 @@ public class Manager : Loader<Manager>
         {
             WinMenu.SetActive(true);
             // Временная заглушка для подсчета итоговых очков
-            Score+=TotalKilled;
+            Score=Score+Health+TotalMoney;
 
             ScoreLabel.text="Score: "+ Score.ToString();
         }
