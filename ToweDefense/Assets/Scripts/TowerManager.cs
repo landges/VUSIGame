@@ -103,7 +103,7 @@ public class TowerManager : Loader<TowerManager>
     }
     public void ViewTowerInfo()
     {
-        levelLabel.text="Label: "+ selectTower.Level;
+        levelLabel.text="Lavel: "+ selectTower.Level;
         radiusLabel.text="Radius: "+selectTower.attackRadius.ToString();
         damageLabel.text="Damage: "+selectTower.Damage;
         rotationLabel.text="Rotation Speed: "+selectTower.rotationSpeed;

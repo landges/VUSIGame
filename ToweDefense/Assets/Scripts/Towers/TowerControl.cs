@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TowerControl : MonoBehaviour
+public abstract class TowerControl : MonoBehaviour
 {
 	public int Level{get;set;}=1;
 	[SerializeField]
@@ -39,12 +39,10 @@ public class TowerControl : MonoBehaviour
     private SpriteRenderer rangeSpriteRenderer;
 
 	public void Start()
-	{
+	{	
 		Upgrades=new UpgradeTower[]
 		{
 			new UpgradeTower(20,1,.5f,0.1f),
-			new UpgradeTower(30,1,.5f,0.1f),
-			new UpgradeTower(40,1,.5f,0.1f),
 		};
 	}
     // Start is called before the first frame update
@@ -237,7 +235,14 @@ public class TowerControl : MonoBehaviour
     public void DisableRange(){
         rangeSpriteRenderer.enabled=false;
     }
+	public virtual string GetStats()
+	{
+		if(NextUpgrade!=null)
+		{
 
+		}
+		return string.Format("\nLеvel: {0} \nDamage: {1}");
+	}
 	public virtual void Upgrade()
 	{
 		Manager.Instance.TotalMoney-=NextUpgrade.Price;
