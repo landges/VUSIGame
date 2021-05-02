@@ -37,6 +37,7 @@ public class Enemy : MonoBehaviour
 		enemyCollider = GetComponent<Collider2D>();
 		anim = GetComponent<Animator>();
 		Debug.Log(healthSlider.IsActive());
+		// healthSlider.gameObject.SetParent(GameObject.Find ("Canvas"));
 		healthSlider.maxValue = health;
 		healthSlider.value = health;
 		fill.color = healthGradient.Evaluate(1f);

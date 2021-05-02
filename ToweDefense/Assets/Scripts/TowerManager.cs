@@ -8,7 +8,6 @@ public class TowerManager : Loader<TowerManager>
 {
     public TowerButton towerBtnPressed{get; set;}
     SpriteRenderer spriteRenderer;
-    bool panelIsOpen;
     [SerializeField]
     GameObject towerPanel;
     [SerializeField]
@@ -33,11 +32,9 @@ public class TowerManager : Loader<TowerManager>
     private Collider2D buildTileOld = null;
     private RaycastHit2D hitTile;
     private TowerControl selectTower;
-    
     // Start is called before the first frame update
     void Start()
     {
-        panelIsOpen=false;
         towerPanel.SetActive(false);
         buildTile = GetComponent<Collider2D>();
     }
@@ -46,10 +43,9 @@ public class TowerManager : Loader<TowerManager>
     {
         if (Input.GetMouseButtonDown(0))
         {
-            
-			Vector2 mousePoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 mousePoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 			RaycastHit2D hit = Physics2D.Raycast(mousePoint, Vector2.zero);
-            if (hit.collider && (hit.collider.tag == "TowerSide"  || hit.collider.tag == "TowerFull"))
+            if (hit.collider && (hit.collider.tag == "TowerSide"  || hit.collider.tag == "TowerFull") && !EventSystem.current.IsPointerOverGameObject())
             {
                 //buildTile.gameObject.GetComponent<SpriteRenderer>().color = Color.red;
                 towerPanel.SetActive(true);
@@ -90,7 +86,10 @@ public class TowerManager : Loader<TowerManager>
                     }
                 }
             }
-            
+            else if(!EventSystem.current.IsPointerOverGameObject())
+            {
+                ClocePanel();
+            }
 		}
     }
     public void ViewTowerInfo()
