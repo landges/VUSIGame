@@ -17,15 +17,7 @@ public class TowerManager : Loader<TowerManager>
     GameObject choiceTower;
 
     [SerializeField]
-    Text levelLabel;
-    [SerializeField]
-    Text damageLabel;
-    [SerializeField]
-    Text radiusLabel;
-    [SerializeField]
-    Text rotationLabel;
-    [SerializeField]
-    Text attackSpeedLabel;
+    Text infoLabel;
     [SerializeField]
     Text upgradePriceLabel;
     [SerializeField]
@@ -103,11 +95,7 @@ public class TowerManager : Loader<TowerManager>
     }
     public void ViewTowerInfo()
     {
-        levelLabel.text="Lavel: "+ selectTower.Level;
-        radiusLabel.text="Radius: "+selectTower.attackRadius.ToString();
-        damageLabel.text="Damage: "+selectTower.Damage;
-        rotationLabel.text="Rotation Speed: "+selectTower.rotationSpeed;
-        attackSpeedLabel.text="Attack Speed: "+Mathf.Round(1/selectTower.timeBetweenAttacks).ToString();
+        infoLabel.text=selectTower.GetStats();
         if (selectTower.NextUpgrade ==null)
         {
             upgradeBtn.interactable=false;

@@ -47,11 +47,7 @@ MonoBehaviour:
   towerPanel: {fileID: 0}
   towerInfo: {fileID: 0}
   choiceTower: {fileID: 0}
-  levelLabel: {fileID: 0}
-  damageLabel: {fileID: 0}
-  radiusLabel: {fileID: 0}
-  rotationLabel: {fileID: 0}
-  attackSpeedLabel: {fileID: 0}
+  infoLabel: {fileID: 0}
   upgradePriceLabel: {fileID: 0}
   sellPriceLabel: {fileID: 0}
   towerImage: {fileID: 0}

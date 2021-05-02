@@ -239,9 +239,9 @@ public abstract class TowerControl : MonoBehaviour
 	{
 		if(NextUpgrade!=null)
 		{
-
+			return string.Format("\nLevel: {0} \nDamage: {1} <color=#00ff00ff> +{3}</color> \nRadius: {2} <color=#00ff00ff> +{4}</color>", Level,Damage,attackRadius,NextUpgrade.Damage,NextUpgrade.AttackRadius);
 		}
-		return string.Format("\nLеvel: {0} \nDamage: {1}");
+		return string.Format("\nLevel: {0} \nDamage: {1} \nRadius: {2}", Level,Damage,attackRadius);
 	}
 	public virtual void Upgrade()
 	{
