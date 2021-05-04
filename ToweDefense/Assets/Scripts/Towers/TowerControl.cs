@@ -139,7 +139,7 @@ public abstract class TowerControl : MonoBehaviour
     }
     IEnumerator MoveProjectTile(Projectile projectile)
     {
-        while ((projectile != null && targetEnemy != null) && (GetTargetDistance(targetEnemy)>0.20f||GetProjectileDistance(projectile)>0f))
+        while (projectile != null && targetEnemy != null)// && (GetTargetDistance(targetEnemy)>0.20f||GetProjectileDistance(projectile)>0f))
         {
 			var dir = targetEnemy.transform.localPosition - transform.localPosition;
             var angleDirection = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
@@ -148,9 +148,10 @@ public abstract class TowerControl : MonoBehaviour
 
 			yield return null;
         }
-		if (targetEnemy == null && projectile!=null)
+		if (targetEnemy == null && projectile != null)
 		{
-			while (projectile != null) {
+			while (projectile != null)
+			{
 				targetEnemy = GetNearestEnemy(inRange: false);
 				if (targetEnemy == null)
 				{
@@ -162,11 +163,11 @@ public abstract class TowerControl : MonoBehaviour
 					var angleDirection = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
 					projectile.transform.rotation = Quaternion.AngleAxis(angleDirection, Vector3.forward);
 					projectile.transform.localPosition = Vector2.MoveTowards(projectile.transform.localPosition, targetEnemy.transform.localPosition, 5f * Time.deltaTime);
-					
+
 				}
 				yield return null;
 			}
-				
+
 		}
 		if (projectile != null)
 		{

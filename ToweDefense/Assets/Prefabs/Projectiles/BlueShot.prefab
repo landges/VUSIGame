@@ -123,6 +123,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackDamage: 2
+  explosionRange: 0
   pType: 2
 --- !u!95 &4666294618694892865
 Animator:
@@ -134,7 +135,7 @@ Animator:
   m_GameObject: {fileID: 1167405412044064652}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: 890cae4978ae98c459ea8aa42407ab1e, type: 2}
+  m_Controller: {fileID: 9100000, guid: 95b01aa6c4c94d94cb8f8c36f040dbcc, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

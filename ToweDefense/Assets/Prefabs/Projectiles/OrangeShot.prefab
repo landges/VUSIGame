@@ -97,6 +97,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackDamage: 2
+  explosionRange: 0.5
   pType: 2
 --- !u!58 &-7607722309796560619
 CircleCollider2D:
@@ -124,7 +125,7 @@ Animator:
   m_GameObject: {fileID: 1167405412044064652}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: b351ce133e9e63b41b49beb8839b42ad, type: 2}
+  m_Controller: {fileID: 9100000, guid: 51a3ff3a4afa8f5498f0dac208af9c56, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

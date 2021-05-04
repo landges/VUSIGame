@@ -36,7 +36,6 @@ public class Enemy : MonoBehaviour
 		enemy = GetComponent<Transform>();
 		enemyCollider = GetComponent<Collider2D>();
 		anim = GetComponent<Animator>();
-		Debug.Log(healthSlider.IsActive());
 		healthSlider.maxValue = health;
 		healthSlider.value = health;
 		fill.color = healthGradient.Evaluate(1f);
@@ -73,14 +72,7 @@ public class Enemy : MonoBehaviour
 	}
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		if (collision.tag == "Projectile")
-		{
-			Projectile newP = collision.gameObject.GetComponent<Projectile>();
-			EnemyHit(newP.AttackDamage);
-			Destroy(collision.gameObject);
-		}
-
-		else if (collision.tag == "Finish")
+		if (collision.tag == "Finish")
 		{
 			Manager.Instance.Health -= 1;
 			Manager.Instance.UnregisterEnemy(this);
@@ -101,7 +93,7 @@ public class Enemy : MonoBehaviour
 		}
 		else
 		{
-			anim.SetTrigger("didDie");
+			anim.SetTrigger("Explode");
 			//dying
 			Die();			
 		}

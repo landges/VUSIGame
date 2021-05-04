@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BasicTower : TowerControl
 {
-    void Start()
+    new void Start()
     {
         Upgrades=new UpgradeTower[]
 		{
