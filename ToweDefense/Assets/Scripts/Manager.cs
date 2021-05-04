@@ -163,7 +163,7 @@ public class Manager : Loader<Manager>
     }
     public void SetCurrentGameState()
     {
-        if (Health==0)
+        if (Health<=0)
         {
             this.Health = 0;
             playBtn.interactable=false;
@@ -247,8 +247,8 @@ public class Manager : Loader<Manager>
     {
         if(currentState == gameStatus.win)
         {
-            Time.timeScale = 0f;
             WinMenu.SetActive(true);
+            Time.timeScale = 0f;
             // Временная заглушка для подсчета итоговых очков
             Score=Score+Health+TotalMoney;
             MainScore = MainScore + Score;
@@ -260,10 +260,10 @@ public class Manager : Loader<Manager>
     {
         if (currentState == gameStatus.gameover)
         {
+            gameOverMenu.SetActive(true);
+            Time.timeScale = 0f;
             MainScore = MainScore + Score;
             Serializer.SaveXml(MainScore, path);
-            Time.timeScale = 0f;
-            gameOverMenu.SetActive(true);
         }
     }
 

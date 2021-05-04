@@ -42,10 +42,12 @@ public class TowerManager : Loader<TowerManager>
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
+        // if (Input.GetMouseButtonDown(0) && Input.touchCount > 0)
         {
             Vector2 mousePoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 			RaycastHit2D hit = Physics2D.Raycast(mousePoint, Vector2.zero);
             if (hit.collider && (hit.collider.tag == "TowerSide"  || hit.collider.tag == "TowerFull") && !EventSystem.current.IsPointerOverGameObject())
+            // if (hit.collider && (hit.collider.tag == "TowerSide"  || hit.collider.tag == "TowerFull") && !EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
             {
                 //buildTile.gameObject.GetComponent<SpriteRenderer>().color = Color.red;
                 towerPanel.gameObject.SetActive(true);
@@ -82,6 +84,7 @@ public class TowerManager : Loader<TowerManager>
                 }
             }
             else if(hit.collider && hit.collider.tag == "Respawn" && !EventSystem.current.IsPointerOverGameObject())
+            // else if(hit.collider && hit.collider.tag == "Respawn" && !EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
             {
                 buildTile = hit.collider;
                 SelectTile();
@@ -92,6 +95,7 @@ public class TowerManager : Loader<TowerManager>
                 Manager.Instance.ShowWavesInfo();
             }
             else if(!EventSystem.current.IsPointerOverGameObject())
+            // else if(!EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
             {
                 ClocePanel();
             }
