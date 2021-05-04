@@ -81,6 +81,16 @@ public class TowerManager : Loader<TowerManager>
                     }
                 }
             }
+            else if(hit.collider && hit.collider.tag == "Respawn" && !EventSystem.current.IsPointerOverGameObject())
+            {
+                buildTile = hit.collider;
+                SelectTile();
+                if(selectTower != null)
+                {
+                    selectTower.DisableRange();
+                }
+                Manager.Instance.ShowWavesInfo();
+            }
             else if(!EventSystem.current.IsPointerOverGameObject())
             {
                 ClocePanel();
