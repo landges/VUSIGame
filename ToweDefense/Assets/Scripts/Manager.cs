@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Assets.Scripts;
+using System.IO;
 
 public enum gameStatus
 {
@@ -48,6 +50,8 @@ public class Manager : Loader<Manager>
 	public int TotalKilled { get; set; } = 0;
 	const float spawnDelay = 0.5f;
     public int Score { get; set; } = 0;
+    public int MainScore { get; set; } = 0;
+    public bool gameOver = false;
 
     [SerializeField]
     private GameObject gameOverMenu;
@@ -70,8 +74,13 @@ public class Manager : Loader<Manager>
 	// Start is called before the first frame update
 	void Start()
     {
-		//IComparer<GameObject> wpc = new IComparer<GameObject>() { };
-		wayPoints = new List<GameObject>(GameObject.FindGameObjectsWithTag("MovingPoint"));
+        Debug.Log(ScoreLabel);
+        //Debug.Log();
+        string datapath = Application.dataPath + "/Saves/SavedData/score.xml";
+        if (File.Exists(datapath))
+            MainScore = Serializer.DeXml(datapath);
+        //IComparer<GameObject> wpc = new IComparer<GameObject>() { };
+        wayPoints = new List<GameObject>(GameObject.FindGameObjectsWithTag("MovingPoint"));
 		wayPoints.Sort(SortByName);
 		Health = TotalHealth;
         totalMoneyLabel.text=TotalMoney.ToString();
@@ -156,11 +165,12 @@ public class Manager : Loader<Manager>
     }
     public void SetCurrentGameState()
     {
-        if (Health <= 0)
+        if (gameOver)
         {
             this.Health = 0;
             playBtn.interactable=false;
             currentState = gameStatus.gameover;
+            gameOver = false;
             GameOver();
         }
         else if(waveNumber==0 && (TotalHealth-Health + TotalKilled) == 0)
@@ -243,14 +253,21 @@ public class Manager : Loader<Manager>
             WinMenu.SetActive(true);
             // Временная заглушка для подсчета итоговых очков
             Score=Score+Health+TotalMoney;
-
+            MainScore = MainScore + Score;
             ScoreLabel.text="Score: "+ Score.ToString();
+            string datapath = Application.dataPath + "/Saves/SavedData/score.xml";
+            Serializer.SaveXml(MainScore, datapath);
         }
     }
     public void GameOver()
     {
         if (currentState == gameStatus.gameover)
         {
+            Debug.Log(MainScore);
+            Debug.Log(Score);
+            MainScore = MainScore + Score;
+            string datapath = Application.dataPath + "/Saves/SavedData/score.xml";
+            Serializer.SaveXml(MainScore, datapath);
             gameOverMenu.SetActive(true);
         }
     }
