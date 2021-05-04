@@ -83,8 +83,14 @@ public class Enemy : MonoBehaviour
 
 		else if (collision.tag == "Finish")
 		{
-			Manager.Instance.Health -= 1;
-			Manager.Instance.UnregisterEnemy(this);
+            if (Manager.Instance.Health > 0)
+                Manager.Instance.Health -= 1;
+            else if (Manager.Instance.Health == 0 && Manager.Instance.gameOver)
+                Manager.Instance.gameOver = false;
+            else if (Manager.Instance.Health == 0 && !Manager.Instance.gameOver)
+                Manager.Instance.gameOver = true;
+
+            Manager.Instance.UnregisterEnemy(this);
 			Manager.Instance.IsWaveOver();
 		}
 	}
