@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Assets.Scripts;
+using System.IO;
 
 public enum gameStatus
 {
@@ -48,7 +50,9 @@ public class Manager : Loader<Manager>
 	public int TotalKilled { get; set; } = 0;
 	const float spawnDelay = 0.5f;
     public int Score { get; set; } = 0;
-
+    public int MainScore { get; set; } = 0;
+    public bool gameOver = false;
+    string path;
     [SerializeField]
     private GameObject gameOverMenu;
     [SerializeField]
@@ -70,8 +74,11 @@ public class Manager : Loader<Manager>
 	// Start is called before the first frame update
 	void Start()
     {
-		//IComparer<GameObject> wpc = new IComparer<GameObject>() { };
-		wayPoints = new List<GameObject>(GameObject.FindGameObjectsWithTag("MovingPoint"));
+        path = Application.dataPath + "/Saves/SavedData/score.xml";
+        if (File.Exists(path))
+            MainScore = Serializer.DeXml(path);
+        //IComparer<GameObject> wpc = new IComparer<GameObject>() { };
+        wayPoints = new List<GameObject>(GameObject.FindGameObjectsWithTag("MovingPoint"));
 		wayPoints.Sort(SortByName);
 		Health = TotalHealth;
         totalMoneyLabel.text=TotalMoney.ToString();
@@ -156,7 +163,7 @@ public class Manager : Loader<Manager>
     }
     public void SetCurrentGameState()
     {
-        if (Health <= 0)
+        if (Health<=0)
         {
             this.Health = 0;
             playBtn.interactable=false;
@@ -241,10 +248,12 @@ public class Manager : Loader<Manager>
         if(currentState == gameStatus.win)
         {
             WinMenu.SetActive(true);
+            Time.timeScale = 0f;
             // Временная заглушка для подсчета итоговых очков
             Score=Score+Health+TotalMoney;
-
+            MainScore = MainScore + Score;
             ScoreLabel.text="Score: "+ Score.ToString();
+            Serializer.SaveXml(MainScore, path);
         }
     }
     public void GameOver()
@@ -252,6 +261,9 @@ public class Manager : Loader<Manager>
         if (currentState == gameStatus.gameover)
         {
             gameOverMenu.SetActive(true);
+            Time.timeScale = 0f;
+            MainScore = MainScore + Score;
+            Serializer.SaveXml(MainScore, path);
         }
     }
 

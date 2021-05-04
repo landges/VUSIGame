@@ -74,8 +74,8 @@ public class Enemy : MonoBehaviour
 	{
 		if (collision.tag == "Finish")
 		{
-			Manager.Instance.Health -= 1;
-			Manager.Instance.UnregisterEnemy(this);
+            Manager.Instance.Health -= 1;
+            Manager.Instance.UnregisterEnemy(this);
 			Manager.Instance.IsWaveOver();
 		}
 	}
