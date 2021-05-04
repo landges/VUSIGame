@@ -34,9 +34,11 @@ public class Manager : Loader<Manager>
     [SerializeField]
     int enemiesPerSpawn;
 
+    [SerializeField]
+    GameObject WavesInfoPanel;
+
     int waveNumber = 0;
     int totalMoney = 280;
-	int whichEnemyToSpawn = 0;
     int enemiesToSpawn = 0;
     gameStatus currentState = gameStatus.play;
 	public List<Enemy> EnemyList = new List<Enemy>();
@@ -261,5 +263,12 @@ public class Manager : Loader<Manager>
     public void Quit(int _sceneNumber)
     {
         SceneManager.LoadScene(_sceneNumber);
+    }
+    public void ShowWavesInfo()
+    {
+        // TowerManager.Instance.SelectTile();
+        TowerManager.Instance.towerPanel.gameObject.SetActive(true);
+        TowerManager.Instance.DisableChilds();
+        WavesInfoPanel.SetActive(true);
     }
 }

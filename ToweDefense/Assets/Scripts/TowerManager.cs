@@ -8,13 +8,12 @@ public class TowerManager : Loader<TowerManager>
 {
     public TowerButton towerBtnPressed{get; set;}
     SpriteRenderer spriteRenderer;
-    bool panelIsOpen;
     [SerializeField]
-    GameObject towerPanel;
+    public Transform towerPanel;
     [SerializeField]
-    GameObject towerInfo;
+    public GameObject towerInfo;
     [SerializeField]
-    GameObject choiceTower;
+    public GameObject choiceTower;
 
     [SerializeField]
     Text infoLabel;
@@ -33,12 +32,10 @@ public class TowerManager : Loader<TowerManager>
     private Collider2D buildTileOld = null;
     private RaycastHit2D hitTile;
     private TowerControl selectTower;
-    
     // Start is called before the first frame update
     void Start()
     {
-        panelIsOpen=false;
-        towerPanel.SetActive(false);
+        towerPanel.gameObject.SetActive(false);
         buildTile = GetComponent<Collider2D>();
     }
     // Update is called once per frame
@@ -46,20 +43,14 @@ public class TowerManager : Loader<TowerManager>
     {
         if (Input.GetMouseButtonDown(0))
         {
-            
-			Vector2 mousePoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 mousePoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 			RaycastHit2D hit = Physics2D.Raycast(mousePoint, Vector2.zero);
-            if (hit.collider && (hit.collider.tag == "TowerSide"  || hit.collider.tag == "TowerFull"))
+            if (hit.collider && (hit.collider.tag == "TowerSide"  || hit.collider.tag == "TowerFull") && !EventSystem.current.IsPointerOverGameObject())
             {
                 //buildTile.gameObject.GetComponent<SpriteRenderer>().color = Color.red;
-                towerPanel.SetActive(true);
+                towerPanel.gameObject.SetActive(true);
                 buildTile = hit.collider;
-                if (buildTileOld != null && buildTile != buildTileOld)
-                {
-                    buildTileOld.GetComponent<SpriteRenderer>().color = Color.white;
-                }
-                buildTile.gameObject.GetComponent<SpriteRenderer>().color = new Color(0.9843137f, 0.4823529f, 1, 1); ;
-                buildTileOld = buildTile;
+                SelectTile();
                 hitTile = hit;
                 if(hit.collider.tag == "TowerSide")
                 {
@@ -67,12 +58,12 @@ public class TowerManager : Loader<TowerManager>
                     if(selectTower != null){
                         selectTower.DisableRange();
                     }
-                    towerInfo.SetActive(false);
+                    DisableChilds();
                     choiceTower.SetActive(true);
                 }
                 else if(hit.collider.tag == "TowerFull")
                 {
-                    choiceTower.SetActive(false);
+                    DisableChilds();
                     towerInfo.SetActive(true);
                     foreach(TowerControl tower in TowerList)
                     {
@@ -90,8 +81,29 @@ public class TowerManager : Loader<TowerManager>
                     }
                 }
             }
-            
+            else if(!EventSystem.current.IsPointerOverGameObject())
+            {
+                ClocePanel();
+            }
 		}
+    }
+    public void SelectTile()
+    {
+        if (buildTileOld != null && buildTile != buildTileOld)
+        {
+            buildTileOld.GetComponent<SpriteRenderer>().color = Color.white;
+        }
+        buildTile.gameObject.GetComponent<SpriteRenderer>().color = new Color(0.9843137f, 0.4823529f, 1, 1); ;
+        buildTileOld = buildTile;
+    }
+    public void DisableChilds() // Вызывешь где-нибудь, например, через по нажатию UI кнопки
+    {
+        for (int i = 0; i < towerPanel.childCount; i++)
+        {
+            towerPanel.GetChild(i).gameObject.SetActive(false); // Выключаем или включаем каждого полученного ребёнка по порядку.
+        }
+        towerPanel.Find("ClosePanel").gameObject.SetActive(true);
+
     }
     public void ViewTowerInfo()
     {
@@ -119,7 +131,7 @@ public class TowerManager : Loader<TowerManager>
         {
             selectTower.DisableRange();
         }
-        towerPanel.SetActive(false);
+        towerPanel.gameObject.SetActive(false);
         if (buildTileOld != null)
         {
             buildTileOld.GetComponent<SpriteRenderer>().color = Color.white;
@@ -155,7 +167,7 @@ public class TowerManager : Loader<TowerManager>
         BuildList.Remove(selectBuild);
         Destroy(selectTower.gameObject);
         selectTower = null;
-        towerInfo.SetActive(false);
+        DisableChilds();
         choiceTower.SetActive(true);
     }
     public void RegisterBuildSite(Collider2D buildTag)
