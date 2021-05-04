@@ -97,6 +97,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackDamage: 2
+  speed: 5
   explosionRange: 0.5
   pType: 2
 --- !u!58 &-7607722309796560619

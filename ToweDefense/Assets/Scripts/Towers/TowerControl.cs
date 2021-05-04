@@ -61,6 +61,11 @@ public abstract class TowerControl : MonoBehaviour
             {
                 targetEnemy = nearestEnemy;
             }
+			else
+			{
+				isAttacking = false;
+				hasTurned = false;
+			}
         }
         else
         {
@@ -109,73 +114,27 @@ public abstract class TowerControl : MonoBehaviour
 	public void Attack()
     {
         isAttacking = false;
+		hasTurned = false;
 		if (GetNearestEnemy() != null)
 		{
-			Projectile newProjectTile = Instantiate(projectile) as Projectile;
-			newProjectTile.AttackDamage=Damage;
-			newProjectTile.transform.localPosition = transform.localPosition;
-			if (newProjectTile.PType == projecttileType.arrow)
+			Projectile newProjectile = Instantiate(projectile) as Projectile;
+			newProjectile.Seek(targetEnemy);
+			newProjectile.AttackDamage=Damage;
+			newProjectile.transform.localPosition = transform.localPosition;
+			if (newProjectile.PType == projecttileType.arrow)
 			{
 				Manager.Instance.AudioSrc.PlayOneShot(SoundManager.Instance.Arrow);
 			}
-			else if (newProjectTile.PType == projecttileType.fireball)
+			else if (newProjectile.PType == projecttileType.fireball)
 			{
 				Manager.Instance.AudioSrc.PlayOneShot(SoundManager.Instance.Fireball);
 			}
-			else if (newProjectTile.PType == projecttileType.rock)
+			else if (newProjectile.PType == projecttileType.rock)
 			{
 				Manager.Instance.AudioSrc.PlayOneShot(SoundManager.Instance.Rock);
 			}
-			if (targetEnemy == null)
-			{
-				Destroy(newProjectTile.gameObject);
-			}
-			else
-			{
-				//move  projectile to enemy
-				StartCoroutine(MoveProjectTile(newProjectTile));
-			}
 		}
     }
-    IEnumerator MoveProjectTile(Projectile projectile)
-    {
-        while (projectile != null && targetEnemy != null)// && (GetTargetDistance(targetEnemy)>0.20f||GetProjectileDistance(projectile)>0f))
-        {
-			var dir = targetEnemy.transform.localPosition - transform.localPosition;
-            var angleDirection = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-            projectile.transform.rotation = Quaternion.AngleAxis(angleDirection, Vector3.forward);
-			projectile.transform.localPosition = Vector2.MoveTowards(projectile.transform.localPosition, targetEnemy.transform.localPosition, 5f * Time.deltaTime);
-
-			yield return null;
-        }
-		if (targetEnemy == null && projectile != null)
-		{
-			while (projectile != null)
-			{
-				targetEnemy = GetNearestEnemy(inRange: false);
-				if (targetEnemy == null)
-				{
-					Destroy(projectile.gameObject);
-				}
-				else
-				{
-					var dir = targetEnemy.transform.localPosition - projectile.transform.localPosition;
-					var angleDirection = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-					projectile.transform.rotation = Quaternion.AngleAxis(angleDirection, Vector3.forward);
-					projectile.transform.localPosition = Vector2.MoveTowards(projectile.transform.localPosition, targetEnemy.transform.localPosition, 5f * Time.deltaTime);
-
-				}
-				yield return null;
-			}
-
-		}
-		if (projectile != null)
-		{
-			Destroy(projectile.gameObject);
-		}
-		yield return null;
-
-	}
     private float GetTargetDistance(Enemy thisEnemy)
     {
         if (thisEnemy == null)
@@ -188,14 +147,6 @@ public abstract class TowerControl : MonoBehaviour
         }
         return Mathf.Abs(Vector2.Distance(transform.localPosition, thisEnemy.transform.localPosition));
     }
-	private float GetProjectileDistance(Projectile thisProjectile)
-	{
-		if (thisProjectile == null)
-		{
-			return 0f;
-		}
-		return Mathf.Abs(Vector2.Distance(transform.localPosition, thisProjectile.transform.localPosition));
-	}
 	private List<Enemy> GetEnemiesInRange()
     {
         List<Enemy> enemiesInRange = new List<Enemy>();

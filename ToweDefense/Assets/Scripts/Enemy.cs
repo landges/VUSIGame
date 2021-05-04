@@ -93,6 +93,9 @@ public class Enemy : MonoBehaviour
 		}
 		else
 		{
+			health = 0;
+			healthSlider.value = health;
+			fill.color = healthGradient.Evaluate(healthSlider.normalizedValue);
 			anim.SetTrigger("Explode");
 			//dying
 			Die();			
@@ -104,10 +107,10 @@ public class Enemy : MonoBehaviour
 		enemyCollider.enabled = false;
 		Manager.Instance.TotalKilled += 1;
 		Manager.Instance.Score += 1;
-		Manager.Instance.AudioSrc.PlayOneShot(SoundManager.Instance.Death);
 		Manager.Instance.AddMoney(revertAmount);
 		Manager.Instance.EnemyList.Remove(this);
 		Destroy(enemy.gameObject,anim.GetCurrentAnimatorStateInfo(0).length);
+		Manager.Instance.AudioSrc.PlayOneShot(SoundManager.Instance.Death);
 		Manager.Instance.IsWaveOver();
 	}
 }

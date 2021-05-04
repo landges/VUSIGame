@@ -123,6 +123,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackDamage: 2
+  speed: 5
   explosionRange: 0
   pType: 2
 --- !u!95 &4666294618694892865
