@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8601284363351684293}
   - component: {fileID: 8601284363351684294}
+  - component: {fileID: -3806527665930365057}
   m_Layer: 0
   m_Name: Path1
   m_TagString: Ground
@@ -81,3 +82,15 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &-3806527665930365057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8601284363351684292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f749d215060f6254baeeca609d4bb0e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -45,8 +45,8 @@ public class Manager : Loader<Manager>
     gameStatus currentState = gameStatus.play;
 	public List<Enemy> EnemyList = new List<Enemy>();
 	public List<GameObject> wayPoints;
-	public int TotalHealth { get; } = 20;
-	public int Health { get; set; }
+	public int TotalHealth { get; set;} = 20;
+	public int health;
 	public int TotalKilled { get; set; } = 0;
 	const float spawnDelay = 0.5f;
     public int Score { get; set; } = 0;
@@ -57,7 +57,18 @@ public class Manager : Loader<Manager>
     private GameObject gameOverMenu;
     [SerializeField]
     private GameObject WinMenu;
-
+    public int Health
+    {
+        get
+        {
+            return health;
+        }
+        set
+        {
+            health = value;
+            healthLabel.text = health.ToString();
+        }
+    }
     public int TotalMoney
     {
         get
