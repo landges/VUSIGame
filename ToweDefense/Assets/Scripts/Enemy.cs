@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class Enemy : MonoBehaviour
 {
@@ -19,16 +20,21 @@ public class Enemy : MonoBehaviour
 	Collider2D enemyCollider;
 	Animator anim;
 	int target = 0;
-	float navigationTime = 0;
+	float navigationTime = 0f;
 	bool hasCome = false;
 
 	public int health;
 	public Slider healthSlider;
 	public Gradient healthGradient;
 	public Image fill;
+
 	public float x_offset;
 	public float y_offset;
 	public bool IsDead { get; private set; } = false;
+
+	private Stack<Node> path;
+	public Point GridPosition{get;set;}
+	private Vector3 destination;
 	// Start is called before the first frame update
 	void Start()
 	{
@@ -36,16 +42,41 @@ public class Enemy : MonoBehaviour
 		enemy = GetComponent<Transform>();
 		enemyCollider = GetComponent<Collider2D>();
 		anim = GetComponent<Animator>();
-		Debug.Log(healthSlider.IsActive());
+		
 		// healthSlider.gameObject.SetParent(GameObject.Find ("Canvas"));
 		healthSlider.maxValue = health;
 		healthSlider.value = health;
 		fill.color = healthGradient.Evaluate(1f);
 		//Manager.Instance.RegisterEnemy(this);
+		SetPath(ManagerScene.Instance.Path);
 	}
 
 	// Update is called once per frame
 	void Update()
+	{
+		Debug.Log(destination);
+		// navigationTime += Time.deltaTime;
+		Move();
+	}
+	private void Move()
+	{
+		navigationTime += Time.deltaTime;
+		
+		transform.position=Vector2.MoveTowards(transform.position, destination, speed * Time.deltaTime);
+		if(transform.position==destination)
+		{
+			if(path!=null && path.Count>0)
+			{
+				GridPosition=path.Peek().GridPosition;
+				destination=path.Pop().WorldPosition;
+				destination.x += x_offset;
+				destination.y += y_offset;
+			}
+		}
+	
+		
+	}
+	public void OldMove()
 	{
 		if (Manager.Instance.wayPoints != null && IsDead == false)
 		{
@@ -119,5 +150,15 @@ public class Enemy : MonoBehaviour
 		Manager.Instance.EnemyList.Remove(this);
 		Destroy(enemy.gameObject,anim.GetCurrentAnimatorStateInfo(0).length);
 		Manager.Instance.IsWaveOver();
+	}
+
+	private void SetPath(Stack<Node> newPath)
+	{
+		if(newPath !=null)
+		{
+			this.path=newPath;
+			GridPosition=path.Peek().GridPosition;
+			destination=path.Pop().WorldPosition;
+		}
 	}
 }

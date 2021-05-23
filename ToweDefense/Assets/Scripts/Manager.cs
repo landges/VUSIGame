@@ -15,6 +15,7 @@ public class Manager : Loader<Manager>
 {
     [SerializeField]
     int totalWaves = 10;
+
     [SerializeField]
     Text totalMoneyLabel;
     [SerializeField]
@@ -27,8 +28,7 @@ public class Manager : Loader<Manager>
     Text ScoreLabel;
     [SerializeField]
     Button playBtn;
-    [SerializeField]
-    GameObject spawnPoint;
+
     [SerializeField]
     Enemy[] enemies;
     [SerializeField]
@@ -52,7 +52,8 @@ public class Manager : Loader<Manager>
     public int Score { get; set; } = 0;
     public int MainScore { get; set; } = 0;
     public bool gameOver = false;
-    string path;
+    string savePath;
+
     [SerializeField]
     private GameObject gameOverMenu;
     [SerializeField]
@@ -85,9 +86,10 @@ public class Manager : Loader<Manager>
 	// Start is called before the first frame update
 	void Start()
     {
-        path = Application.dataPath + "/Saves/SavedData/score.xml";
-        if (File.Exists(path))
-            MainScore = Serializer.DeXml(path);
+        ManagerScene.Instance.GeneratePath();
+        savePath = Application.dataPath + "/Saves/SavedData/score.xml";
+        if (File.Exists(savePath))
+            MainScore = Serializer.DeXml(savePath);
         //IComparer<GameObject> wpc = new IComparer<GameObject>() { };
         wayPoints = new List<GameObject>(GameObject.FindGameObjectsWithTag("MovingPoint"));
 		wayPoints.Sort(SortByName);
@@ -116,6 +118,7 @@ public class Manager : Loader<Manager>
             {
                 if (EnemyList.Count < totalEnemies)
                 {
+                    var spawnPoint=ManagerScene.Instance.spawn;
 					var center = spawnPoint.transform.position;
 					var size  = spawnPoint.GetComponent<BoxCollider2D>().size;
 					Enemy newEnemy = Instantiate(enemies[Random.Range(0,enemiesToSpawn)]) as Enemy;
@@ -264,7 +267,7 @@ public class Manager : Loader<Manager>
             Score=Score+Health+TotalMoney;
             MainScore = MainScore + Score;
             ScoreLabel.text="Score: "+ Score.ToString();
-            Serializer.SaveXml(MainScore, path);
+            Serializer.SaveXml(MainScore, savePath);
         }
     }
     public void GameOver()
@@ -272,7 +275,7 @@ public class Manager : Loader<Manager>
         if (currentState == gameStatus.gameover)
         {
             MainScore = MainScore + Score;
-            Serializer.SaveXml(MainScore, path);
+            Serializer.SaveXml(MainScore, savePath);
             Time.timeScale = 0f;
             gameOverMenu.SetActive(true);
         }
