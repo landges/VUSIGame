@@ -11,7 +11,7 @@ public class ManagerScene : Loader<ManagerScene>
     [SerializeField]
     private GameObject[] tilePrefabs;
     private XmlElement xRoot;
-
+    private int levelIndex;
     [SerializeField]
     private Transform map;
     public Point spawnPoint;
@@ -41,7 +41,7 @@ public class ManagerScene : Loader<ManagerScene>
     // Start is called before the first frame update
     void Start()
     {
-        
+        levelIndex = PlayerPrefs.GetInt("levelIndex");
         ReadXML();
         CreateLevel();
         SetLevelParam();
@@ -113,7 +113,7 @@ public class ManagerScene : Loader<ManagerScene>
     private void ReadXML()
     {
         
-        TextAsset textAsset = (TextAsset) Resources.Load(@"level2");
+        TextAsset textAsset = (TextAsset) Resources.Load(@"level"+levelIndex.ToString());
         string xmlData=textAsset.text;
         string msg_xml = Encoding.UTF8.GetString(Encoding.UTF8.GetPreamble());
         if (xmlData.StartsWith(msg_xml))

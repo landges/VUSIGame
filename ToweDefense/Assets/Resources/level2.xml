@@ -19,4 +19,12 @@
 	</map>
 	<int name="money" value="281" />
     <int name="health" value="21" />
+	<waves>
+		<enemy name="0">
+			1200231231001
+		</enemy>
+		<enemy name="1">
+			0012000000210
+		</enemy>
+	</waves>
 </level>

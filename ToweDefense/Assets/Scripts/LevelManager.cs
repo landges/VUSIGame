@@ -16,7 +16,9 @@ public class LevelManager : MonoBehaviour
 
     public void loadLevel(int levelIndex)
     {
-        SceneManager.LoadScene(levelIndex);
+        PlayerPrefs.SetInt("levelIndex", levelIndex);
+        PlayerPrefs.Save();
+        SceneManager.LoadScene(1);
     }
     void Start()
     {
