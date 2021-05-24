@@ -11,6 +11,15 @@ public enum gameStatus
     next,play,gameover,win
 }
 
+
+public struct paramForSerializer
+{
+    int numberLevel;
+    int levelScore;
+    int maxWaves;
+    int monetScore;
+}
+
 public class Manager : Loader<Manager>
 {
     [SerializeField]
@@ -42,6 +51,8 @@ public class Manager : Loader<Manager>
     int waveNumber = 0;
     int totalMoney = 280;
     int enemiesToSpawn = 0;
+    public int numberLevel = 1;
+    public float money = 0;
     gameStatus currentState = gameStatus.play;
 	public List<Enemy> EnemyList = new List<Enemy>();
 	public List<GameObject> wayPoints;
@@ -51,12 +62,39 @@ public class Manager : Loader<Manager>
 	const float spawnDelay = 0.5f;
     public int Score { get; set; } = 0;
     public int MainScore { get; set; } = 0;
+    public int LevelScore { get; set; } = 0;
     public bool gameOver = false;
+    public paramForSerializer paramsForSer;
     string path;
     [SerializeField]
     private GameObject gameOverMenu;
     [SerializeField]
     private GameObject WinMenu;
+
+
+    private void SaveParams()
+    {
+        PlayerPrefs.SetInt("Level" + numberLevel.ToString(), 1);
+        if (LevelScore < Score)
+        {
+            PlayerPrefs.SetInt("Score", Score);
+        }
+        PlayerPrefs.SetFloat("MoneyScore", money);
+        PlayerPrefs.Save();
+
+    }
+
+    private void LoadParams()
+    {
+
+        if (PlayerPrefs.HasKey("MoneyScore"))
+        {
+            LevelScore = PlayerPrefs.GetInt("Score");
+            money = PlayerPrefs.GetFloat("MoneyScore");
+            // money = LevelScore / 10;
+        };
+
+    }
 
     public int TotalMoney
     {
@@ -71,12 +109,17 @@ public class Manager : Loader<Manager>
         }
     }
 	public AudioSource AudioSrc { get; private set; }
-	// Start is called before the first frame update
-	void Start()
+    // Start is called before the first frame update
+    void Start()
     {
         path = Application.dataPath + "/Saves/SavedData/score.xml";
-        if (File.Exists(path))
-            MainScore = Serializer.DeXml(path);
+        LoadParams();
+        Debug.Log(money);
+        Debug.Log(MainScore);
+        Debug.Log(Score);
+        Debug.Log(LevelScore);
+        //if (File.Exists(path))
+        //    MainScore = Serializer.DeXml(path);
         //IComparer<GameObject> wpc = new IComparer<GameObject>() { };
         wayPoints = new List<GameObject>(GameObject.FindGameObjectsWithTag("MovingPoint"));
 		wayPoints.Sort(SortByName);
@@ -251,9 +294,10 @@ public class Manager : Loader<Manager>
             Time.timeScale = 0f;
             // Временная заглушка для подсчета итоговых очков
             Score=Score+Health+TotalMoney;
-            MainScore = MainScore + Score;
+            money = money + Score % 10;
             ScoreLabel.text="Score: "+ Score.ToString();
-            Serializer.SaveXml(MainScore, path);
+            SaveParams();
+            //Serializer.SaveXml(MainScore, path);
         }
     }
     public void GameOver()
@@ -262,8 +306,11 @@ public class Manager : Loader<Manager>
         {
             gameOverMenu.SetActive(true);
             Time.timeScale = 0f;
-            MainScore = MainScore + Score;
-            Serializer.SaveXml(MainScore, path);
+            money = money + Score / 10;
+            Debug.Log("Money " + money.ToString());
+            Debug.Log("Score " + Score.ToString());
+            SaveParams();
+            //Serializer.SaveXml(MainScore, path);
         }
     }
 

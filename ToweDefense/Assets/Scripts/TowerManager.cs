@@ -38,6 +38,7 @@ public class TowerManager : Loader<TowerManager>
         towerPanel.gameObject.SetActive(false);
         buildTile = GetComponent<Collider2D>();
     }
+
     // Update is called once per frame
     void Update()
     {
