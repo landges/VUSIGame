@@ -76,33 +76,7 @@ public class Enemy : MonoBehaviour
 	
 		
 	}
-	public void OldMove()
-	{
-		if (Manager.Instance.wayPoints != null && IsDead == false)
-		{
-			navigationTime += Time.deltaTime;
-			if (navigationTime > navigation)
-			{
-				if (target < Manager.Instance.wayPoints.Count)
-				{
-					var newpos = Manager.Instance.wayPoints[target].transform.position;
-					var prevpos = enemy.position;
-					newpos.x += x_offset;
-					newpos.y += y_offset;
-					enemy.position = Vector2.MoveTowards(enemy.position, newpos, speed * navigationTime);
-					if (Vector3.Distance(enemy.position, prevpos) ==0f)
-					{
-						target += 1;
-					}
-				}
-				else
-				{
-					enemy.position = Vector2.MoveTowards(enemy.position, exit.GetComponent<CircleCollider2D>().ClosestPoint(enemy.position), speed * navigationTime);
-				}
-				navigationTime = 0;
-			}
-		}
-	}
+	
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
 		if (collision.tag == "Projectile")

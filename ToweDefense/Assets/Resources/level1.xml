@@ -18,7 +18,7 @@
 		000000000000000000000000000
 	</map>
 	<int name="money" value="181" />
-    <int name="health" value="21" />
+    <int name="health" value="20" />
 	<waves>
 		<enemy name="0">
 			1200231231001
