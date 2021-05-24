@@ -23,8 +23,6 @@ public struct paramForSerializer
 public class Manager : Loader<Manager>
 {
     [SerializeField]
-    int totalWaves = 10;
-    [SerializeField]
     Text totalMoneyLabel;
     [SerializeField]
     Text currentWave;
@@ -36,36 +34,41 @@ public class Manager : Loader<Manager>
     Text ScoreLabel;
     [SerializeField]
     Button playBtn;
-    [SerializeField]
-    GameObject spawnPoint;
+
     [SerializeField]
     Enemy[] enemies;
-    [SerializeField]
-    int totalEnemies;
-    [SerializeField]
-    int enemiesPerSpawn;
 
     [SerializeField]
     GameObject WavesInfoPanel;
 
     int waveNumber = 0;
     int totalMoney = 280;
-    int enemiesToSpawn = 0;
+
     public int numberLevel = 1;
     public float money = 0;
+
     gameStatus currentState = gameStatus.play;
 	public List<Enemy> EnemyList = new List<Enemy>();
-	public List<GameObject> wayPoints;
-	public int TotalHealth { get; } = 20;
-	public int Health { get; set; }
+	public int TotalHealth { get; set;} = 20;
+	public int health;
 	public int TotalKilled { get; set; } = 0;
-	const float spawnDelay = 0.5f;
     public int Score { get; set; } = 0;
     public int MainScore { get; set; } = 0;
     public int LevelScore { get; set; } = 0;
     public bool gameOver = false;
-    public paramForSerializer paramsForSer;
-    string path;
+
+    public Wave[] Waves{get;set;}
+    public Wave CurrentWave
+    {
+        get
+        {
+            if(Waves.Length>=waveNumber)
+            {
+                return Waves[waveNumber];
+            }
+            return null;
+        }
+    }
     [SerializeField]
     private GameObject gameOverMenu;
     [SerializeField]
@@ -96,6 +99,18 @@ public class Manager : Loader<Manager>
 
     }
 
+    public int Health
+    {
+        get
+        {
+            return health;
+        }
+        set
+        {
+            health = value;
+            healthLabel.text = health.ToString();
+        }
+    }
     public int TotalMoney
     {
         get
@@ -112,17 +127,25 @@ public class Manager : Loader<Manager>
     // Start is called before the first frame update
     void Start()
     {
-        path = Application.dataPath + "/Saves/SavedData/score.xml";
         LoadParams();
         Debug.Log(money);
         Debug.Log(MainScore);
         Debug.Log(Score);
         Debug.Log(LevelScore);
-        //if (File.Exists(path))
-        //    MainScore = Serializer.DeXml(path);
-        //IComparer<GameObject> wpc = new IComparer<GameObject>() { };
-        wayPoints = new List<GameObject>(GameObject.FindGameObjectsWithTag("MovingPoint"));
-		wayPoints.Sort(SortByName);
+        ManagerScene.Instance.GeneratePath();
+
+        Waves=new Wave[]{
+            new Wave(0,0.5f,1,5),
+            new Wave(0,0.5f,2,5),
+            new Wave(1,0.5f,1,4),
+            new Wave(1,0.5f,2,5),
+            new Wave(1,0.5f,3,5),
+            new Wave(0,0.5f,3,7),
+            new Wave(0,0.5f,3,7),
+            new Wave(1,0.5f,4,10),
+            new Wave(0,0.5f,4,10)
+        };
+
 		Health = TotalHealth;
         totalMoneyLabel.text=TotalMoney.ToString();
         healthLabel.text=TotalHealth.ToString();
@@ -142,16 +165,16 @@ public class Manager : Loader<Manager>
 
 	IEnumerator Spawn()
     {
-        if (enemiesPerSpawn > 0 && EnemyList.Count < totalEnemies)
+        if (CurrentWave.EnemiesPerSpawn > 0 && EnemyList.Count < CurrentWave.TotalEnemies)
         {
-            for (int i = 0; i < enemiesPerSpawn; i++)
+            for (int i = 0; i < CurrentWave.EnemiesPerSpawn; i++)
             {
-                if (EnemyList.Count < totalEnemies)
+                if (EnemyList.Count < CurrentWave.TotalEnemies)
                 {
+                    var spawnPoint=ManagerScene.Instance.spawn;
 					var center = spawnPoint.transform.position;
 					var size  = spawnPoint.GetComponent<BoxCollider2D>().size;
-					Enemy newEnemy = Instantiate(enemies[Random.Range(0,enemiesToSpawn)]) as Enemy;
-                    // Enemy newEnemy = Instantiate(enemies[1]) as Enemy;
+					Enemy newEnemy = Instantiate(enemies[CurrentWave.IndexEnemy]) as Enemy;
 					//need balancing
 					newEnemy.health = (int)(newEnemy.startingHealth * (1 + (float)waveNumber/10));
 					newEnemy.x_offset = Random.Range(-size.x/2, size.x/2);
@@ -161,7 +184,7 @@ public class Manager : Loader<Manager>
 					RegisterEnemy(newEnemy);
                 }
             }
-            yield return new WaitForSeconds(spawnDelay);
+            yield return new WaitForSeconds(CurrentWave.SpawnDelay);
             StartCoroutine(Spawn());
         }
     }
@@ -194,12 +217,12 @@ public class Manager : Loader<Manager>
     public void IsWaveOver()
     {
 		healthLabel.text = Health.ToString();
-        if ((TotalHealth-Health+TotalKilled)>=totalEnemies)
+        if ((TotalHealth-Health+TotalKilled)>=CurrentWave.TotalEnemies)
         {
-            if (waveNumber <= enemies.Length)
-            {
-                enemiesToSpawn = waveNumber;
-            }
+            // if (waveNumber <= enemies.Length)
+            // {
+            //     enemiesToSpawn = waveNumber;
+            // }
             SetCurrentGameState();
             ShowMenu();
         }
@@ -217,7 +240,7 @@ public class Manager : Loader<Manager>
         {
             currentState = gameStatus.play;
         }
-        else if (waveNumber >= totalWaves && EnemyList.Count == 0)
+        else if (waveNumber >= Waves.Length-1 && EnemyList.Count == 0)
         {
             currentState = gameStatus.win;
             playBtn.interactable=false;
@@ -234,19 +257,15 @@ public class Manager : Loader<Manager>
         {
             case gameStatus.next:
                 waveNumber += 1;
-                totalEnemies += waveNumber;
                 break;
             default:
-                totalEnemies = 1;
                 Health = TotalHealth;
                 totalMoney = TotalMoney;
-                enemiesToSpawn = 0;
 				totalMoneyLabel.text = TotalMoney.ToString();
                 healthLabel.text = TotalHealth.ToString();
 				AudioSrc.PlayOneShot(SoundManager.Instance.Newgame);				
 				break;
         }
-		DestroyEnemies();
         TotalKilled = 0;
         currentWave.text = "Wave " + (waveNumber + 1);
         StartCoroutine(Spawn());
@@ -296,6 +315,7 @@ public class Manager : Loader<Manager>
             Score=Score+Health+TotalMoney;
             money = money + Score % 10;
             ScoreLabel.text="Score: "+ Score.ToString();
+
             SaveParams();
             //Serializer.SaveXml(MainScore, path);
         }
@@ -304,6 +324,7 @@ public class Manager : Loader<Manager>
     {
         if (currentState == gameStatus.gameover)
         {
+
             gameOverMenu.SetActive(true);
             Time.timeScale = 0f;
             money = money + Score / 10;
