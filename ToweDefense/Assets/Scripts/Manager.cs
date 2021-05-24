@@ -12,14 +12,6 @@ public enum gameStatus
 }
 
 
-public struct paramForSerializer
-{
-    int numberLevel;
-    int levelScore;
-    int maxWaves;
-    int monetScore;
-}
-
 public class Manager : Loader<Manager>
 {
     [SerializeField]
@@ -44,7 +36,6 @@ public class Manager : Loader<Manager>
     int waveNumber = 0;
     int totalMoney = 280;
 
-    public int numberLevel = 1;
     public float money = 0;
 
     gameStatus currentState = gameStatus.play;
@@ -77,10 +68,10 @@ public class Manager : Loader<Manager>
 
     private void SaveParams()
     {
-        PlayerPrefs.SetInt("Level" + numberLevel.ToString(), 1);
+        // PlayerPrefs.SetInt("Level" + ManagerScene.Instance.levelIndex.ToString(), 1);
         if (LevelScore < Score)
         {
-            PlayerPrefs.SetInt("Score", Score);
+            PlayerPrefs.SetInt("Score_" + ManagerScene.Instance.levelIndex.ToString(), Score);
         }
         PlayerPrefs.SetFloat("MoneyScore", money);
         PlayerPrefs.Save();
@@ -89,12 +80,10 @@ public class Manager : Loader<Manager>
 
     private void LoadParams()
     {
-
-        if (PlayerPrefs.HasKey("MoneyScore"))
+        money = PlayerPrefs.GetFloat("MoneyScore");
+        if (PlayerPrefs.HasKey("Score_" + ManagerScene.Instance.levelIndex.ToString()))
         {
-            LevelScore = PlayerPrefs.GetInt("Score");
-            money = PlayerPrefs.GetFloat("MoneyScore");
-            // money = LevelScore / 10;
+            LevelScore = PlayerPrefs.GetInt("Score_" + ManagerScene.Instance.levelIndex.ToString());
         };
 
     }
@@ -313,7 +302,7 @@ public class Manager : Loader<Manager>
             Time.timeScale = 0f;
             // Временная заглушка для подсчета итоговых очков
             Score=Score+Health+TotalMoney;
-            money = money + Score % 10;
+            money = money + Score / 10;
             ScoreLabel.text="Score: "+ Score.ToString();
 
             SaveParams();
