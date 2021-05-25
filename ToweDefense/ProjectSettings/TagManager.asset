@@ -12,6 +12,7 @@ TagManager:
   - Ground
   - Projectile
   - ' TowerPanel'
+  - Level
   layers:
   - Default
   - TransparentFX
