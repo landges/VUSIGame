@@ -14,7 +14,9 @@ public abstract class TowerControl : MonoBehaviour
 	public float rotationSpeed;
 	[SerializeField]
     public float attackRadius;
-    [SerializeField]
+	[SerializeField]
+	public float castDuration;
+	[SerializeField]
     public Projectile projectile;
     [SerializeField]
     public int sellPrice { get; set; }
@@ -32,17 +34,18 @@ public abstract class TowerControl : MonoBehaviour
 			return null;
 		}
 	}
-    Enemy targetEnemy = null;
+    protected Enemy targetEnemy = null;
     float attackCounter;
-	bool hasTurned = false;
-    bool isAttacking = false;
+	protected bool hasTurned = false;
+    protected bool isAttacking = false;
     private SpriteRenderer rangeSpriteRenderer;
 
 	public void Start()
-	{	
-		Upgrades=new UpgradeTower[]
+	{
+		//anim.Play("Boom", layer: 0);
+		Upgrades =new UpgradeTower[]
 		{
-			new UpgradeTower(20,1,.5f,0.1f),
+			new UpgradeTower(20,1,.5f,0.1f, 0.005f),
 		};
 	}
     // Start is called before the first frame update
@@ -111,7 +114,7 @@ public abstract class TowerControl : MonoBehaviour
 			yield return null;
 		}
 	}
-	public void Attack()
+	public virtual void Attack()
     {
         isAttacking = false;
 		hasTurned = false;
@@ -159,7 +162,7 @@ public abstract class TowerControl : MonoBehaviour
         }
         return enemiesInRange;
     }
-    private Enemy GetNearestEnemy(bool inRange=true)
+    protected Enemy GetNearestEnemy(bool inRange=true)
     {
         Enemy nearestEnemy = null;
         float smallestDistance = float.PositiveInfinity;

@@ -6,11 +6,11 @@ public class ChargerTower : TowerControl
 {
 	new void Start()
     {
-        Upgrades=new UpgradeTower[]
+		Upgrades =new UpgradeTower[]
 		{
-			new UpgradeTower(20,1,.5f,0.1f),
-			new UpgradeTower(30,1,.5f,0.1f),
-			new UpgradeTower(40,1,.5f,0.1f),
+			new UpgradeTower(price: 20, damage: 1, attackRadius:.5f, rotationSpeed:0.1f, explosionRange: 0.001f, attackSpeed: 0.005f),
+			new UpgradeTower(price: 30, damage: 1, attackRadius:.5f, rotationSpeed:0.1f, explosionRange: 0.001f, attackSpeed: 0.005f),
+			new UpgradeTower(price: 40, damage: 1, attackRadius:.5f, rotationSpeed:0.1f, explosionRange: 0.001f, attackSpeed: 0.005f),
 		};
     }
     public override string GetStats()
@@ -23,7 +23,8 @@ public class ChargerTower : TowerControl
 	}
     public override void Upgrade()
     {
-        //over specific Upgrades
-        base.Upgrade();
+		//over specific Upgrades
+		timeBetweenAttacks -= NextUpgrade.AttackSpeed;
+		base.Upgrade();
     }
 }
