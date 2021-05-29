@@ -13,11 +13,45 @@
 	<int name="money" value="100" />
     <int name="health" value="20" />
 	<waves>
-		<enemy name="0">
-			1200231231001
-		</enemy>
-		<enemy name="1">
-			0012000000210
-		</enemy>
+		<wave>
+			<int name="enemy" value="0"/>
+			<int name="density" value="1"/>
+			<int name="total" value="10"/>
+		</wave>
+		<wave>
+			<int name="enemy" value="1"/>
+			<int name="density" value="2"/>
+			<int name="total" value="10"/>
+		</wave>
+		<wave>
+			<int name="enemy" value="0"/>
+			<int name="density" value="3"/>
+			<int name="total" value="12"/>
+		</wave>
+		<wave>
+			<int name="enemy" value="0"/>
+			<int name="density" value="1"/>
+			<int name="total" value="10"/>
+		</wave>
+		<wave>
+			<int name="enemy" value="0"/>
+			<int name="density" value="1"/>
+			<int name="total" value="10"/>
+		</wave>
+		<wave>
+			<int name="enemy" value="0"/>
+			<int name="density" value="1"/>
+			<int name="total" value="10"/>
+		</wave>
+		<wave>
+			<int name="enemy" value="0"/>
+			<int name="density" value="1"/>
+			<int name="total" value="10"/>
+		</wave>
+		<wave>
+			<int name="enemy" value="0"/>
+			<int name="density" value="1"/>
+			<int name="total" value="10"/>
+		</wave>
 	</waves>
 </level>

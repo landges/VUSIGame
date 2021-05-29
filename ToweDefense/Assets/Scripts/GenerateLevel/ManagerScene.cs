@@ -132,6 +132,20 @@ public class ManagerScene : Loader<ManagerScene>
         int money=int.Parse(xRoot.SelectSingleNode("int[@name='money']").Attributes["value"].Value);
         Manager.Instance.TotalMoney=money;
     }
+    public Wave[] SetWaves()
+    {
+        var waves=xRoot.SelectSingleNode("waves");
+        List<Wave> levelWaves=new List<Wave>();
+        foreach (XmlNode waveNode in waves.ChildNodes)
+        {
+            int indexEnemy = int.Parse(waveNode.SelectSingleNode("int[@name='enemy']").Attributes["value"].Value);
+            int density=int.Parse(waveNode.SelectSingleNode("int[@name='density']").Attributes["value"].Value);
+            int totalEnemies=int.Parse(waveNode.SelectSingleNode("int[@name='total']").Attributes["value"].Value);
+            Wave wave=new Wave(indexEnemy,0.5f,density,totalEnemies);
+            levelWaves.Add(wave);
+        }
+        return levelWaves.ToArray();
+    }
     public bool InBounds(Point position)
     {
         return position.X>=0 && position.Y >=0 && position.X < mapSize.X && position.Y < mapSize.Y;

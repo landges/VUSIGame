@@ -90,17 +90,7 @@ public class Manager : Loader<Manager>
     {
         ManagerScene.Instance.GeneratePath();
 
-        Waves=new Wave[]{
-            new Wave(0,0.5f,1,5),
-            new Wave(0,0.5f,2,5),
-            new Wave(1,0.5f,1,4),
-            new Wave(1,0.5f,2,5),
-            new Wave(1,0.5f,3,5),
-            new Wave(0,0.5f,3,7),
-            new Wave(0,0.5f,3,7),
-            new Wave(1,0.5f,4,10),
-            new Wave(0,0.5f,4,10)
-        };
+        Waves=ManagerScene.Instance.SetWaves();
 
         savePath = Application.dataPath + "/Saves/SavedData/score.xml";
         if (File.Exists(savePath))
@@ -128,7 +118,7 @@ public class Manager : Loader<Manager>
         {
             for (int i = 0; i < CurrentWave.EnemiesPerSpawn; i++)
             {
-                if (EnemyList.Count < CurrentWave.TotalEnemies)
+                if (EnemyList.Count + TotalKilled < CurrentWave.TotalEnemies)
                 {
                     var spawnPoint=ManagerScene.Instance.spawn;
 					var center = spawnPoint.transform.position;
