@@ -11,7 +11,7 @@ public class ManagerScene : Loader<ManagerScene>
     [SerializeField]
     private GameObject[] tilePrefabs;
     private XmlElement xRoot;
-    private int levelIndex;
+    public int levelIndex;
     [SerializeField]
     private Transform map;
     public Point spawnPoint;

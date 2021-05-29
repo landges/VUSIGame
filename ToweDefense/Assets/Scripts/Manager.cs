@@ -11,6 +11,7 @@ public enum gameStatus
     next,play,gameover,win
 }
 
+
 public class Manager : Loader<Manager>
 {
     [SerializeField]
@@ -34,6 +35,9 @@ public class Manager : Loader<Manager>
 
     int waveNumber = 0;
     int totalMoney = 280;
+
+    public float money = 0;
+
     gameStatus currentState = gameStatus.play;
 	public List<Enemy> EnemyList = new List<Enemy>();
 	public int TotalHealth { get; set;} = 20;
@@ -41,8 +45,8 @@ public class Manager : Loader<Manager>
 	public int TotalKilled { get; set; } = 0;
     public int Score { get; set; } = 0;
     public int MainScore { get; set; } = 0;
+    public int LevelScore { get; set; } = 0;
     public bool gameOver = false;
-    string savePath;
 
     public Wave[] Waves{get;set;}
     public Wave CurrentWave
@@ -60,6 +64,30 @@ public class Manager : Loader<Manager>
     private GameObject gameOverMenu;
     [SerializeField]
     private GameObject WinMenu;
+
+
+    private void SaveParams()
+    {
+        // PlayerPrefs.SetInt("Level" + ManagerScene.Instance.levelIndex.ToString(), 1);
+        if (LevelScore < Score)
+        {
+            PlayerPrefs.SetInt("Score_" + ManagerScene.Instance.levelIndex.ToString(), Score);
+        }
+        PlayerPrefs.SetFloat("MoneyScore", money);
+        PlayerPrefs.Save();
+
+    }
+
+    private void LoadParams()
+    {
+        money = PlayerPrefs.GetFloat("MoneyScore");
+        if (PlayerPrefs.HasKey("Score_" + ManagerScene.Instance.levelIndex.ToString()))
+        {
+            LevelScore = PlayerPrefs.GetInt("Score_" + ManagerScene.Instance.levelIndex.ToString());
+        };
+
+    }
+
     public int Health
     {
         get
@@ -85,16 +113,18 @@ public class Manager : Loader<Manager>
         }
     }
 	public AudioSource AudioSrc { get; private set; }
-	// Start is called before the first frame update
-	void Start()
+    // Start is called before the first frame update
+    void Start()
     {
+        LoadParams();
+        Debug.Log(money);
+        Debug.Log(MainScore);
+        Debug.Log(Score);
+        Debug.Log(LevelScore);
         ManagerScene.Instance.GeneratePath();
 
         Waves=ManagerScene.Instance.SetWaves();
 
-        savePath = Application.dataPath + "/Saves/SavedData/score.xml";
-        if (File.Exists(savePath))
-            MainScore = Serializer.DeXml(savePath);
 		Health = TotalHealth;
         totalMoneyLabel.text=TotalMoney.ToString();
         healthLabel.text=TotalHealth.ToString();
@@ -178,7 +208,7 @@ public class Manager : Loader<Manager>
     }
     public void SetCurrentGameState()
     {
-        if (Health==0)
+        if (Health<=0)
         {
             this.Health = 0;
             playBtn.interactable=false;
@@ -258,23 +288,29 @@ public class Manager : Loader<Manager>
     {
         if(currentState == gameStatus.win)
         {
-            Time.timeScale = 0f;
             WinMenu.SetActive(true);
+            Time.timeScale = 0f;
             // Временная заглушка для подсчета итоговых очков
             Score=Score+Health+TotalMoney;
-            MainScore = MainScore + Score;
+            money = money + Score / 10;
             ScoreLabel.text="Score: "+ Score.ToString();
-            Serializer.SaveXml(MainScore, savePath);
+
+            SaveParams();
+            //Serializer.SaveXml(MainScore, path);
         }
     }
     public void GameOver()
     {
         if (currentState == gameStatus.gameover)
         {
-            MainScore = MainScore + Score;
-            Serializer.SaveXml(MainScore, savePath);
-            Time.timeScale = 0f;
+
             gameOverMenu.SetActive(true);
+            Time.timeScale = 0f;
+            money = money + Score / 10;
+            Debug.Log("Money " + money.ToString());
+            Debug.Log("Score " + Score.ToString());
+            SaveParams();
+            //Serializer.SaveXml(MainScore, path);
         }
     }
 
