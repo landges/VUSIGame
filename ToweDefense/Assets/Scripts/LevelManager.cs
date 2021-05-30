@@ -27,7 +27,6 @@ public class LevelManager : MonoBehaviour
     {
         //PlayerPrefs.DeleteAll();
         var listLvl = GameObject.Find("SelectLvl");
-        Debug.Log(listLvl);
         MoneyLabel = GameObject.Find("MoneyLabel").GetComponent<Text>();
         if (PlayerPrefs.HasKey("MoneyScore"))
         {
@@ -58,14 +57,12 @@ public class LevelManager : MonoBehaviour
                     }
 
                 }
-                Debug.Log(textElem.text);
             }
         }
     }
 
     public void QuitGame()
     {
-        Debug.Log("QUIT!");
         Application.Quit();
     }
 }

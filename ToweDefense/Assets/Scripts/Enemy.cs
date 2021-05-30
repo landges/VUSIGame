@@ -54,8 +54,6 @@ public class Enemy : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		Debug.Log(destination);
-		// navigationTime += Time.deltaTime;
 		Move();
 	}
 	private void Move()
@@ -76,7 +74,7 @@ public class Enemy : MonoBehaviour
 	
 		
 	}
-	
+
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
 		if (collision.tag == "Projectile")

@@ -54,9 +54,6 @@ public class ManagerScene : Loader<ManagerScene>
     }
     private void CreateLevel()
     {
-        // Dictionary<string,int> newdict=new Dictionary<string,int>();
-        // newdict.Add("S",1);
-        // Debug.Log(newdict['S']);
         Tiles = new Dictionary<Point,TileScript>();
         string[] mapData= ReadLevel();
 

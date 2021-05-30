@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Assets.Scripts;
 using System.IO;
+using System.Linq;
 
 public enum gameStatus
 {
@@ -60,6 +61,12 @@ public class Manager : Loader<Manager>
             return null;
         }
     }
+    [SerializeField]
+    Transform posEnemyList;
+    [SerializeField]
+    private GameObject waveStatPrefab;
+    [SerializeField]
+    private Transform WaveList;
     [SerializeField]
     private GameObject gameOverMenu;
     [SerializeField]
@@ -117,14 +124,10 @@ public class Manager : Loader<Manager>
     void Start()
     {
         LoadParams();
-        Debug.Log(money);
-        Debug.Log(MainScore);
-        Debug.Log(Score);
-        Debug.Log(LevelScore);
         ManagerScene.Instance.GeneratePath();
 
         Waves=ManagerScene.Instance.SetWaves();
-
+        SetPossibleEnemies();
 		Health = TotalHealth;
         totalMoneyLabel.text=TotalMoney.ToString();
         healthLabel.text=TotalHealth.ToString();
@@ -247,6 +250,7 @@ public class Manager : Loader<Manager>
         }
         TotalKilled = 0;
         currentWave.text = "Wave " + (waveNumber + 1);
+        SetWaveList();
         StartCoroutine(Spawn());
         playBtn.gameObject.SetActive(false);
 		
@@ -307,8 +311,6 @@ public class Manager : Loader<Manager>
             gameOverMenu.SetActive(true);
             Time.timeScale = 0f;
             money = money + Score / 10;
-            Debug.Log("Money " + money.ToString());
-            Debug.Log("Score " + Score.ToString());
             SaveParams();
             //Serializer.SaveXml(MainScore, path);
         }
@@ -329,5 +331,47 @@ public class Manager : Loader<Manager>
         TowerManager.Instance.towerPanel.gameObject.SetActive(true);
         TowerManager.Instance.DisableChilds();
         WavesInfoPanel.SetActive(true);
+    }
+    public void SetWaveList()
+    {
+        for(int i=WaveList.transform.childCount-1;i>=0;i--)
+        {
+            Destroy(WaveList.transform.GetChild(i).gameObject);
+        }
+        for(int i=waveNumber;i<waveNumber+5;i++)
+        {
+            if(i<Waves.Length-1)
+            {
+                GameObject waveStat=Instantiate(waveStatPrefab);
+                waveStat.transform.SetParent(WaveList);
+                waveStat.transform.localScale=new Vector3(1.0f,1.0f,1.0f);
+                Text stats=waveStat.GetComponentInChildren<Text>();
+                Image enemyImage=waveStat.transform.GetChild(1).GetComponent<Image>();
+                enemyImage.sprite=enemies[Waves[i].IndexEnemy].GetComponent<SpriteRenderer>().sprite;
+                stats.text=string.Format("Density: {0}\t Total: {1}", Waves[i].EnemiesPerSpawn,Waves[i].TotalEnemies);
+            }
+            
+        }
+    }
+    public void SetPossibleEnemies()
+    {
+        List<int> listPosEnemies=new List<int>();
+        foreach (Wave item in Waves)
+        {
+            listPosEnemies.Add(item.IndexEnemy);
+        }
+        HashSet<int> uniqEnemies=new HashSet<int>(listPosEnemies);
+        int[] posEnemies=uniqEnemies.ToArray(); 
+        for(int i=0;i<posEnemies.Length;i++)
+        {
+            GameObject _gameObject = new GameObject(string.Format("enemy{0}",i));
+            _gameObject.AddComponent<SpriteRenderer>();
+            SpriteRenderer imageEnemy=enemies[i].GetComponent<SpriteRenderer>();
+            _gameObject.GetComponent<SpriteRenderer>().sprite = imageEnemy.sprite;
+            _gameObject.transform.SetParent(posEnemyList);
+            float startpos=(posEnemies.Length-1)*(-40.0f)/2.0f;
+            _gameObject.transform.localPosition=new Vector3(startpos+(i*40.0f),0,0);
+            _gameObject.GetComponent<SpriteRenderer>().sortingOrder=3;
+        }
     }
 }
