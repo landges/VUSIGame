@@ -22,7 +22,7 @@ public class Enemy : MonoBehaviour
 	float navigationTime = 0;
 	bool hasCome = false;
 
-	public int health;
+	public float health;
 	public Slider healthSlider;
 	public Gradient healthGradient;
 	public Image fill;
@@ -72,6 +72,7 @@ public class Enemy : MonoBehaviour
 	}
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
+		Debug.Log(collision.tag);
 		if (collision.tag == "Finish")
 		{
             Manager.Instance.Health -= 1;
@@ -79,7 +80,19 @@ public class Enemy : MonoBehaviour
 			Manager.Instance.IsWaveOver();
 		}
 	}
-	public void EnemyHit(int hitpoints)
+	private void OnTriggerStay2D(Collider2D collisionInfo)
+	{
+		foreach (BoxCollider2D col in collisionInfo.gameObject.GetComponents<BoxCollider2D>())
+		{
+			if (col.gameObject.tag == "LaserBeam")
+			{
+				LaserTower lt = col.gameObject.GetComponentInParent<LaserTower>();
+				Debug.Log(lt.Damage);
+				EnemyHit(lt.Damage*Time.deltaTime);
+			}
+		}
+	}
+	public void EnemyHit(float hitpoints)
 	{
 		if (health - hitpoints > 0)
 		{

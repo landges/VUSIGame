@@ -35,7 +35,7 @@ public abstract class TowerControl : MonoBehaviour
 		}
 	}
     protected Enemy targetEnemy = null;
-    float attackCounter;
+    protected float attackCounter;
 	protected bool hasTurned = false;
     protected bool isAttacking = false;
     private SpriteRenderer rangeSpriteRenderer;
@@ -49,7 +49,7 @@ public abstract class TowerControl : MonoBehaviour
 		};
 	}
     // Start is called before the first frame update
-    void Init(){
+    protected virtual void Init(){
         rangeSpriteRenderer=this.transform.GetChild(0).GetComponent<SpriteRenderer>();
         rangeSpriteRenderer.transform.localScale=new Vector3(this.attackRadius*2f,this.attackRadius*2f,1);
     }
@@ -77,7 +77,9 @@ public abstract class TowerControl : MonoBehaviour
 			{
 				isAttacking = true;
 				attackCounter = timeBetweenAttacks;
-            }
+				hasTurned = false;
+				Attack();
+			}
             else
             {
                 isAttacking = false;
@@ -90,15 +92,7 @@ public abstract class TowerControl : MonoBehaviour
 			}
         }
     }
-    public void FixedUpdate()
-    {
-        if (isAttacking == true)
-        {
-			hasTurned = false;
-			Attack();
-		}
-    }
-	private IEnumerator RotateTower()
+	protected IEnumerator RotateTower()
 	{
 		while (!hasTurned && targetEnemy!=null)
 		{

@@ -12,6 +12,7 @@ TagManager:
   - Ground
   - Projectile
   - ' TowerPanel'
+  - LaserBeam
   layers:
   - Default
   - TransparentFX
