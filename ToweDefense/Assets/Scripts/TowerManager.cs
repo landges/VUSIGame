@@ -101,6 +101,20 @@ public class TowerManager : Loader<TowerManager>
                 ClocePanel();
             }
 		}
+        if(selectTower != null)
+        {
+            if(selectTower.NextUpgrade != null)
+            {
+                if (selectTower.NextUpgrade.Price <= Manager.Instance.TotalMoney)
+                {
+                    upgradeBtn.interactable=true;
+                }
+                else{
+                    upgradeBtn.interactable=false;
+                }
+            }
+            
+        }
     }
     public void SelectTile()
     {

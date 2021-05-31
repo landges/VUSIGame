@@ -16,17 +16,15 @@ public class LevelManager : MonoBehaviour
     Text MoneyLabel;
     [SerializeField]
     GameObject SelectLvl;
+    [SerializeField]
+    Button levelBtnPrefab;
+    [SerializeField]
+    Transform levelList;
 
-    public void loadLevel(int levelIndex)
-    {
-        PlayerPrefs.SetInt("levelIndex", levelIndex);
-        PlayerPrefs.Save();
-        SceneManager.LoadScene(1);
-    }
+    
     void Start()
     {
         //PlayerPrefs.DeleteAll();
-        var listLvl = GameObject.Find("SelectLvl");
         MoneyLabel = GameObject.Find("MoneyLabel").GetComponent<Text>();
         if (PlayerPrefs.HasKey("MoneyScore"))
         {
@@ -36,9 +34,30 @@ public class LevelManager : MonoBehaviour
                 MoneyLabel.text = MoneyLabel.text.Remove(MoneyLabel.text.Length - 1) + scoreMain.ToString();
             }   
         }
-
+        SetLevelList();
     }
-
+    public void loadLevel(int levelIndex)
+    {
+        Debug.Log(levelIndex);
+        PlayerPrefs.SetInt("levelIndex", levelIndex);
+        PlayerPrefs.Save();
+        SceneManager.LoadScene(1);
+    }
+    public void SetLevelList()
+    {
+        Object[] worlds = Resources.LoadAll("levels", typeof(TextAsset));
+        Sprite[] levelImages = Resources.LoadAll<Sprite>("ImagesLevel");
+        for(int j=0;j<worlds.Length;j++)
+        {
+            int param=j+1;
+            Button levelBtn=Instantiate(levelBtnPrefab);
+            levelBtn.gameObject.transform.GetChild(1).GetComponent<Image>().sprite=levelImages[j];
+            levelBtn.gameObject.transform.GetChild(0).GetComponent<Text>().text=(j+1).ToString();
+            levelBtn.gameObject.transform.SetParent(levelList);
+            levelBtn.gameObject.transform.localScale=new Vector3(1.0f,1.0f,1.0f);
+            levelBtn.onClick.AddListener(() => loadLevel(param));
+        }
+    }
     public void LoadScore()
     {
         var listLvl = new List<GameObject>(GameObject.FindGameObjectsWithTag("Level")); ;

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<level>
+	<map>
+		000000000000000000000000000-
+		000000000000000000000000000-
+		000000000007770000000000000-
+		000016666666666666664000000-
+		000050000000000000005000000-
+		000026666690000000002668000-
+		000000000000000000000000000-
+		000000000000000000000000000
+	</map>
+	<int name="money" value="100" />
+    <int name="health" value="20" />
+	<waves>
+		<wave>
+			<int name="enemy" value="0"/>
+			<int name="density" value="1"/>
+			<int name="total" value="10"/>
+		</wave>
+		<wave>
+			<int name="enemy" value="1"/>
+			<int name="density" value="2"/>
+			<int name="total" value="10"/>
+		</wave>
+		<wave>
+			<int name="enemy" value="0"/>
+			<int name="density" value="3"/>
+			<int name="total" value="12"/>
+		</wave>
+		<wave>
+			<int name="enemy" value="0"/>
+			<int name="density" value="1"/>
+			<int name="total" value="10"/>
+		</wave>
+		<wave>
+			<int name="enemy" value="0"/>
+			<int name="density" value="1"/>
+			<int name="total" value="10"/>
+		</wave>
+		<wave>
+			<int name="enemy" value="0"/>
+			<int name="density" value="1"/>
+			<int name="total" value="10"/>
+		</wave>
+		<wave>
+			<int name="enemy" value="0"/>
+			<int name="density" value="1"/>
+			<int name="total" value="10"/>
+		</wave>
+		<wave>
+			<int name="enemy" value="0"/>
+			<int name="density" value="1"/>
+			<int name="total" value="10"/>
+		</wave>
+	</waves>
+</level>

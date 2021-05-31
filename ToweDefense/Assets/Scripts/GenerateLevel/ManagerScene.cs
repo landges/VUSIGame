@@ -110,7 +110,7 @@ public class ManagerScene : Loader<ManagerScene>
     private void ReadXML()
     {
         
-        TextAsset textAsset = (TextAsset) Resources.Load(@"level"+levelIndex.ToString());
+        TextAsset textAsset = (TextAsset) Resources.Load(@"levels/level"+levelIndex.ToString());
         string xmlData=textAsset.text;
         string msg_xml = Encoding.UTF8.GetString(Encoding.UTF8.GetPreamble());
         if (xmlData.StartsWith(msg_xml))
