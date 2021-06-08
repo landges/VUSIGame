@@ -23,7 +23,7 @@ public class Enemy : MonoBehaviour
 	float navigationTime = 0f;
 	bool hasCome = false;
 
-	public int health;
+	public float health;
 	public Slider healthSlider;
 	public Gradient healthGradient;
 	public Image fill;
@@ -42,8 +42,6 @@ public class Enemy : MonoBehaviour
 		enemy = GetComponent<Transform>();
 		enemyCollider = GetComponent<Collider2D>();
 		anim = GetComponent<Animator>();
-		
-		// healthSlider.gameObject.SetParent(GameObject.Find ("Canvas"));
 		healthSlider.maxValue = health;
 		healthSlider.value = health;
 		fill.color = healthGradient.Evaluate(1f);
@@ -59,7 +57,7 @@ public class Enemy : MonoBehaviour
 	private void Move()
 	{
 		navigationTime += Time.deltaTime;
-		
+		 	
 		transform.position=Vector2.MoveTowards(transform.position, destination, speed * Time.deltaTime);
 		if(transform.position==destination)
 		{
@@ -77,21 +75,27 @@ public class Enemy : MonoBehaviour
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		if (collision.tag == "Projectile")
-		{
-			Projectile newP = collision.gameObject.GetComponent<Projectile>();
-			EnemyHit(newP.AttackDamage);
-			Destroy(collision.gameObject);
-		}
-
-		else if (collision.tag == "Finish")
+		Debug.Log(collision.tag);
+		if (collision.tag == "Finish")
 		{
             Manager.Instance.Health -= 1;
             Manager.Instance.UnregisterEnemy(this);
 			Manager.Instance.IsWaveOver();
 		}
 	}
-	public void EnemyHit(int hitpoints)
+	private void OnTriggerStay2D(Collider2D collisionInfo)
+	{
+		foreach (BoxCollider2D col in collisionInfo.gameObject.GetComponents<BoxCollider2D>())
+		{
+			if (col.gameObject.tag == "LaserBeam")
+			{
+				LaserTower lt = col.gameObject.GetComponentInParent<LaserTower>();
+				Debug.Log(lt.Damage);
+				EnemyHit(lt.Damage*Time.deltaTime);
+			}
+		}
+	}
+	public void EnemyHit(float hitpoints)
 	{
 		if (health - hitpoints > 0)
 		{
@@ -105,7 +109,10 @@ public class Enemy : MonoBehaviour
 		}
 		else
 		{
-			anim.SetTrigger("didDie");
+			health = 0;
+			healthSlider.value = health;
+			fill.color = healthGradient.Evaluate(healthSlider.normalizedValue);
+			anim.SetTrigger("Explode");
 			//dying
 			Die();			
 		}
@@ -116,10 +123,10 @@ public class Enemy : MonoBehaviour
 		enemyCollider.enabled = false;
 		Manager.Instance.TotalKilled += 1;
 		Manager.Instance.Score += 1;
-		Manager.Instance.AudioSrc.PlayOneShot(SoundManager.Instance.Death);
 		Manager.Instance.AddMoney(revertAmount);
 		Manager.Instance.EnemyList.Remove(this);
 		Destroy(enemy.gameObject,anim.GetCurrentAnimatorStateInfo(0).length);
+		Manager.Instance.AudioSrc.PlayOneShot(SoundManager.Instance.Death);
 		Manager.Instance.IsWaveOver();
 	}
 
