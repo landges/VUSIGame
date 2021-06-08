@@ -332,7 +332,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4a5f7349f8d2c742bb8214a1e97049d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Damage: 10
+  Damage: 30
   timeBetweenAttacks: 2
   rotationSpeed: 0.4
   attackRadius: 2

@@ -57,7 +57,7 @@ public class Enemy : MonoBehaviour
 	private void Move()
 	{
 		navigationTime += Time.deltaTime;
-		 	
+
 		transform.position=Vector2.MoveTowards(transform.position, destination, speed * Time.deltaTime);
 		if(transform.position==destination)
 		{
@@ -75,7 +75,6 @@ public class Enemy : MonoBehaviour
 
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		Debug.Log(collision.tag);
 		if (collision.tag == "Finish")
 		{
             Manager.Instance.Health -= 1;
@@ -90,7 +89,6 @@ public class Enemy : MonoBehaviour
 			if (col.gameObject.tag == "LaserBeam")
 			{
 				LaserTower lt = col.gameObject.GetComponentInParent<LaserTower>();
-				Debug.Log(lt.Damage);
 				EnemyHit(lt.Damage*Time.deltaTime);
 			}
 		}
